@@ -1,11 +1,18 @@
 {
-    "name": "geekality/weblib",
-    "description": "Common web stuff",
-    "license": "MIT",
-    "require":
-    {
-        
-    },
+	"name": "geekality/weblib",
+	"description": "Common web stuff",
+	"license": "MIT",
+	"require":
+	{
+		"php": "7.*",
+		"geekality/consolelog": "dev-master",
+		"bitworking/mimeparse": "2.*",		
+		"leafo/lessphp": "0.*",
+		"mustache/mustache": "2.*",
+		"league/commonmark": "0.*",
+		"webuni/commonmark-attributes-extension": "0.*",
+		"webuni/commonmark-table-extension": "0.*"
+	},
 	
 	"autoload":
 	{
