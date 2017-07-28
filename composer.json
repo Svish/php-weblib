@@ -5,7 +5,7 @@
 	"require":
 	{
 		"php": "7.*",
-		"geekality/consolelog": "dev-master",
+		"geekality/consolelog": "*",
 		"bitworking/mimeparse": "2.*",		
 		"leafo/lessphp": "0.*",
 		"mustache/mustache": "2.*",
