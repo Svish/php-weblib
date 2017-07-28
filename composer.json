@@ -2,5 +2,13 @@
     "name": "geekality/weblib",
     "description": "Common web stuff",
     "license": "MIT",
-    "require": {}
+    "require":
+    {
+        
+    },
+	
+	"autoload":
+	{
+		"psr-4": {"": "src/"}
+	}
 }
