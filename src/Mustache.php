@@ -13,7 +13,7 @@ class Mustache extends Mustache_Engine
 
 	public static function engine(array $options = [], $template = null)
 	{
-		if($template && is_dir(self::DIR_APP.$template))
+		if($template)
 			$options += [
 				'partials_loader' => new Loader([
 					self::DIR_APP.$template,
