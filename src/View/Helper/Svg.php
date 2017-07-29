@@ -27,14 +27,18 @@ class Svg
 
 	protected function get($file)
 	{
-		$file = self::DIR.$file.'.svg';
+		$opt = explode(';', $file, 2);
+
+		$file = self::DIR."{$opt[0]}.svg";
+		$opt = $opt[1] ?? null;
+
 
 		if( ! is_file($file))
-			return "[svg={$opt[0]}]";
+			return "[svg=$opt]";
 		$svg = file_get_contents($file);
 
-		if(isset($opt[1]))
-			$svg = str_replace('<svg ', "<svg {$opt[1]} ", $svg);
+		if($opt)
+			$svg = str_replace('<svg ', "<svg $opt ", $svg);
 
 		return $svg;
 	}
