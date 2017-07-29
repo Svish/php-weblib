@@ -24,6 +24,11 @@ class Data implements JsonSerializable
 	}
 
 
+	public function __toString()
+	{
+		return get_class($this);
+	}
+
 
 	public function __get($key)
 	{
@@ -47,7 +52,7 @@ class Data implements JsonSerializable
 
 	public function __call($method, $args)
 	{
-		if(is_callable($this->data[$method]))
+		if(is_callable($this->data[$method] ?? false))
 			return call_user_func_array($this->data[$method], $args);
 	}
 
