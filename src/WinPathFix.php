@@ -4,6 +4,9 @@ define('IS_WIN', stripos(PHP_OS, 'win') === 0);
 
 /**
  * Methods for fixing paths if on windows.
+ * 
+ *     $system_path = self::to_win($unicode_path);
+ *     $unicode_path = self::from_win($system_path);
  */
 trait WinPathFix
 {
