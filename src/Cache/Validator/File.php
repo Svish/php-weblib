@@ -1,12 +1,12 @@
 <?php
 
-namespace Cache;
+namespace Cache\Validator;
 use Log;
 
 /**
  * Checks if given files have changed.
  */
-class FileValidator
+class File
 {
 	use \WinPathFix;
 

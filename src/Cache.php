@@ -29,18 +29,18 @@ class Cache
 
 		// Unless first is null, add default file validator
 		if(null !== reset($cache_validators))
-			$this->valid[] = new Cache\IncludedFilesValidator();
+			$this->valid[] = new Cache\Validator\IncludedFiles();
 
 		// Add cache validators
 		foreach($cache_validators as $v)
 		{
 			// int: TTL
 			if(is_int($v))
-				$this->valid[] = new Cache\TimeValidator($v);
+				$this->valid[] = new Cache\Validator\Time($v);
 
 			// array: list of files to check
 			elseif(is_array($v))
-				$this->valid[] = new Cache\FileValidator($v);
+				$this->valid[] = new Cache\Validator\File($v);
 
 			// callable: callable to call
 			elseif(is_callable($v))
@@ -81,7 +81,7 @@ class Cache
 		foreach($this->valid as $v)
 			if( ! $v($mtime, $key))
 			{
-				Log::trace("{$this->id}[$key] invalidated by ".strval_any($v));
+				Log::trace_raw(strval_any($v).": Invalidated {$this->id}[$key]}");
 				$valid = false;
 			}
 

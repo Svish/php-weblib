@@ -1,11 +1,11 @@
 <?php
 
-namespace Cache;
+namespace Cache\Validator;
 
 /**
  * Checks if any included files have changed.
  */
-class IncludedFilesValidator extends FileValidator
+class IncludedFiles extends File
 {
 	public function __construct()
 	{
