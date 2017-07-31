@@ -6,17 +6,19 @@
  */
 class Valid
 {
-	public static function check_array(array $subject, array $rule_set)
+	public static function check_array(array $subject, iterable $rule_set)
 	{
-		return self::check(new Data($subject), $rule_set);
+		self::check(new Data($subject), $rule_set);
 	}
 
-	public static function check(Data $subject, array $rule_set)
+	public static function check(Data $subject, iterable $rule_set)
 	{
 		$errors = [];
 		foreach($rule_set as $property => $rules)
 		{
 			$value = $subject->$property;
+			if(is_string($rules))
+				$rules = [$rules];
 
 			// If allowed empty, and value is empty, skip other rules
 			if( ! in_array('not_empty', $rules) and ! self::not_empty($value))
@@ -64,8 +66,6 @@ class Valid
 			Log::warn($errors);
 			throw new Error\ValidationFailed($errors, $subject);
 		}
-		
-		return true;
 	}
 
 
@@ -110,10 +110,17 @@ class Valid
 
 
 
+	public static function phone($value): bool
+	{
+		return preg_match('/^\+?\d+$/', $value);
+	}
+
+
+
 	public static function email($value): bool
 	{
-		// TODO: Use https://github.com/egulias/EmailValidator
-		return self::not_empty($value);
+		// TODO: Use https://github.com/egulias/EmailValidator?
+		return strpos($value, '@') > 0;
 	}
 
 	public static function email_domain($value): bool
@@ -146,8 +153,9 @@ class Valid
 		return $value >= $min && $value <= $max;
 	}
 
-	const FLEXI_TIME = '(?<year>\d{4})(?:-(?<month>\d{2})(?:-(?<day>\d{2})(?: (?<hour>\d{2}):(?<min>\d{2})(?::(?<sec>\d{2}))?)?)?)?';
-
+	/**
+	 * @see http://www.geekality.net/?p=3022
+	 */
 	public static function flexi_time($value): bool
 	{
 		$valid = preg_match('/^'.self::FLEXI_TIME.'$/', $value, $x);
@@ -179,4 +187,5 @@ class Valid
 
 		return true;
 	}
+	const FLEXI_TIME = '(?<year>\d{4})(?:-(?<month>\d{2})(?:-(?<day>\d{2})(?: (?<hour>\d{2}):(?<min>\d{2})(?::(?<sec>\d{2}))?)?)?)?';
 }
