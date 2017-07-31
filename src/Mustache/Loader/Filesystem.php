@@ -1,6 +1,6 @@
 <?php
 
-namespace Mustache;
+namespace Mustache\Loader;
 use Security;
 
 
@@ -12,7 +12,7 @@ use Security;
  * 
  * TODO: Possibly use/learn from ProductionFilesystemLoader class?
  */
-class FilesystemLoader extends \Mustache_Loader_FilesystemLoader
+class Filesystem extends \Mustache_Loader_FilesystemLoader
 {
 	const EXT = '.ms';
 	const ACCESS_PRAGMA = '/{{%\s*ACCESS\s*((?<=\s).+)?}}/';

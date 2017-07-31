@@ -1,7 +1,10 @@
 <?php
 
-use Mustache\CascadingFilesystemLoader as Loader;
 use Mustache\NoWarningsPls as Logger;
+
+use Mustache\CascadingFilesystemLoader as Loader;
+use Mustache\FilesystemLoader as File;
+use Mustache\FilesystemPartialsLoader as Partials;
 
 /**
  * Mustache_Engine wrapper with some defaults and other stuff.
@@ -19,7 +22,7 @@ class Mustache extends Mustache_Engine
 					self::DIR_APP.$template,
 					self::DIR_APP,
 					self::DIR_LIB,
-				]),
+				], Partials::class),
 			];
 
 		return new self($options + [
@@ -30,7 +33,7 @@ class Mustache extends Mustache_Engine
 			'loader' => new Loader([
 					self::DIR_APP,
 					self::DIR_LIB,
-				]),
+				], File::class),
 			]);
 	}
 }
