@@ -2,6 +2,9 @@
 
 # Simple utility functions
 
+/**
+ * 
+ */
 function preg_match_all_callback(string $pattern, string $subject, callable $callback, ...$callback_parameters)
 {
 	$r = preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
@@ -10,34 +13,64 @@ function preg_match_all_callback(string $pattern, string $subject, callable $cal
 	return $r;
 }
 
-function get_class_name($obj)
+/**
+ * @return string Class name of $obj, without namespaces.
+ */
+function get_class_name($obj): string
 {
 	if(is_object($obj))
 		$obj = get_class($obj);
 	return substr(strrchr('\\'.$obj, '\\'), 1);
 }
 
-function str_truncate(string $str, int $max_length, string $append = '…')
+
+
+/**
+ * @return string Truncates the $subject
+ */
+function str_truncate(string $subject, int $max_length, string $append = '…')
 {
-	return strlen($str) > $max_length
-		? substr($str, 0, $max_length) . $append
-		: $str;
+	return strlen($subject) > $max_length
+		? substr($subject, 0, $max_length) . $append
+		: $subject;
 }
 
-function strval_any($anything): string
-{
-	if(is_object($anything))
-		return get_class($anything);
 
-	if(is_array($anything))
+
+/**
+ * @return string Safe strval that (should) accept anything.
+ */
+function strval_any($subject): string
+{
+	if(is_object($subject))
+		return get_class($subject);
+
+	if(is_array($subject))
 	{
-		$str = json_encode($anything, JSON_NUMERIC_CHECK);
+		$str = json_encode($subject, JSON_NUMERIC_CHECK);
 		return str_truncate($str, 35);
 	}
 
-	return strval($anything);
+	return strval($subject);
 }
 
+/**
+ * @return mixed Array without rejected items.
+ */
+function array_reject(array $array, callable $callback)
+{
+	$good = [];
+	foreach($array as $item)
+		if( ! $callback($item))
+			$good[] = $item;
+	return $good;
+}
+
+
+
+/**
+ * @return mixed The removed item.
+ */
 function array_remove(array &$array, $key)
 {
 	$value = $array[$key] ?? null;
@@ -45,19 +78,36 @@ function array_remove(array &$array, $key)
 	return $value;
 }
 
-function array_flatten(array $array)
+
+
+/**
+ * @return array Flattened array.
+ */
+function array_flatten(array $array): array
 {
 	$it = new \RecursiveArrayIterator($array);
 	$it = new \RecursiveIteratorIterator($it);
     return iterator_to_array($it, false);
 }
 
+
+
+/**
+ * Same as array_map, but the extra parameters
+ * will be passed to the callback function
+ * after the item.
+ */
 function array_map_callback(array $array, callable $callback, ...$extra_parameters)
 {
 	foreach($array as $key => $value)
 		$array[$key] = $callback($value, ...$extra_parameters);
 }
 
+
+
+/**
+ * Same as array_map, but a variable number of callbacks in parameter order.
+ */
 function array_map_callbacks(array $array, callable ...$callbacks): array
 {
 	foreach($callbacks as $callback)
@@ -67,19 +117,32 @@ function array_map_callbacks(array $array, callable ...$callbacks): array
 	return $array;
 }
 
+
+
+/**
+ * Returns only items in $array whose key exists in $whitelist.
+ */
 function array_whitelist(array $array, array $whitelist)
 {
 	return array_intersect_key($array, array_flip($whitelist));
 }
 
+/**
+ * Returns all items in $array except whose key exists in $blacklist.
+ */
 function array_blacklist(array $array, array $blacklist)
 {
 	return array_diff_key($array, array_flip($blacklist));
 }
 
-function array_sort_by($key, array &$array)
+
+
+/**
+ * Sorts the arrays/objects by key.
+ */
+function array_sort_by($key, array &$subject)
 {
-	return usort($array, function($x, $y) use ($key)
+	return usort($subject, function($x, $y) use ($key)
 	{
 		$x = is_array($x)
 			? $x[$key] ?? null
@@ -92,6 +155,11 @@ function array_sort_by($key, array &$array)
 	});
 }
 
+
+
+/**
+ * Groups the array by $key.
+ */
 function array_group_by(string $key, $list, bool $keep_key = false, string $key_name = null, string $group_name = 'items'): array
 {
 	$groups = [];
@@ -112,12 +180,21 @@ function array_group_by(string $key, $list, bool $keep_key = false, string $key_
 }
 
 
+
+/**
+ * @return bool True if $haystack starts with $needle.
+ */
 function starts_with(string $needle, string $haystack): bool
 {
 	return $needle === "" 
 		|| strpos($haystack, $needle) === 0;
 }
 
+
+
+/**
+ * @return bool True if $haystack ends with $needle.
+ */
 function ends_with(string $needle, string $haystack): bool
 {
 	return $needle === "" 
