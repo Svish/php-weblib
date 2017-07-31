@@ -1,7 +1,10 @@
 <?php
 
 namespace Controller;
+
+use Error\PageNotFound;
 use HTTP;
+
 
 /**
  * Handles serving of SVG files.
@@ -28,7 +31,7 @@ class Svg extends Cached
 		$this->file = realpath(self::DIR.$info['params'][1]);
 
 		if( ! in_array($this->file, $this->files))
-			HTTP::plain_exit(404, $info['path']);
+			throw new PageNotFound;
 
 		parent::before($info);
 	}

@@ -10,7 +10,7 @@ use HTTP, Model, Security;
  * $required_roles = [] => Require login
  * $required_roles = ['foo', 'bar'] => Require foo, bar and login
  */
-abstract class Secure extends Session
+abstract class Secure extends \Controller
 {
 	protected $required_roles = false;
 

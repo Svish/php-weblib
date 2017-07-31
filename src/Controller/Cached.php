@@ -7,9 +7,9 @@ use Geekality\ConsoleLog;
 /**
  * Base controller which handles caching of content
  */
-abstract class Cached extends Controller
+abstract class Cached extends \Controller
 {
-	protected $max_age = 144000; // 4 hours
+	protected $max_age = ENV === 'prod' ? 5144000 : 2; // 4 hours
 	
 	protected $parameter_whitelist = [];
 
@@ -105,7 +105,7 @@ abstract class Cached extends Controller
 			$time = time() - 2;
 			$lmod = gmdate('D, d M Y H:i:s T', $time);
 			$etag = '"'.sha1($content).'"';
-			$max_age = ENV === 'prod' ? $this->max_age : 5;
+			$max_age = $this->max_age;
 
 			header("Last-Modified: $lmod");
 			header("Etag: $etag");

@@ -1,38 +1,39 @@
 <?php
 
 namespace Controller;
+
+use Error\PageNotFound;
+
 use Config, Cache, HTTP, Log;
 use lessc;
 
+
 /**
  * Handles compilation and serving of LESS files as CSS.
- * 
- * @uses Config css
  */
 class Less extends Cached
 {
 	const DIR = SRC.'_less'.DIRECTORY_SEPARATOR;
 	const EXT = '.less';
 
-	private $config;
-	private $file;
+	private $_paths;
+	private $_file;
 
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->config = Config::css();
-		$this->config->valid = array_map('basename', glob(self::DIR.'*'.self::EXT));
+		$this->_paths = array_map('basename', glob(self::DIR.'*'.self::EXT));
 	}
 
 
 	public function before(array &$info)
 	{
 		$file = $info['params'][2].self::EXT;
-		if( ! in_array($file, $this->config->valid))
-			throw new \Error\PageNotFound();
 
-		$this->file = self::DIR.$file;
+		if( ! in_array($file, $this->_paths))
+			throw new PageNotFound;
+
+		$this->_file = self::DIR.$file;
 		$this->compile();
 
 		parent::before($info);
@@ -66,13 +67,13 @@ class Less extends Cached
 	private function compile()
 	{
 		Log::group();
-		Log::trace_raw('Cached compilation of '.basename($this->file).'…');
+		Log::trace_raw('Cached compilation of '.basename($this->_file).'…');
 
 		$cache = new Cache(__CLASS__);
-		$cache_key = basename($this->file).'c';
+		$cache_key = basename($this->_file).'c';
 
 		// Get cached if exists
-		$old = $cache->get($cache_key, ['root' => $this->file, 'updated' => 0]);
+		$old = $cache->get($cache_key, ['root' => $this->_file, 'updated' => 0]);
 
 		// Do a cached compile
 		try
@@ -84,7 +85,8 @@ class Less extends Cached
 		}
 		catch(\Exception $e)
 		{
-			HTTP::plain_exit(500, $e->getMessage());
+			Log::error("Compile failed\r\n", $e->getMessage());
+			HTTP::plain_exit(500, $e->getMessage(), true);
 		}
 
 		// Set if updated

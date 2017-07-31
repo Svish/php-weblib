@@ -1,7 +1,5 @@
 <?php
 
-namespace Controller;
-
 /**
  * Base controller for handling requests.
  *

@@ -148,9 +148,10 @@ class HTTP
 	 * @param code HTTP status code
 	 * @param message Optional plain text message to output.
 	 */
-	public static function plain_exit(int $code, string $message = null)
+	public static function plain_exit(int $code, string $message = null, $keep_headers = false)
 	{
-		header_remove();
+		if( ! $keep_headers)
+			header_remove();
 
 		self::set_status($code);
 		header('Content-Type: text/plain; charset=utf-8');
