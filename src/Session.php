@@ -15,11 +15,14 @@ class Session
 		if( ! session_id())
 			self::start();
 
+		Log::trace("Append", $key, $value);
 		return $_SESSION[$key][] = $value;
 	}
 
 	public static function unget($key, $default = null)
 	{
+		Log::trace("Unget", $key, $default);
+
 		$value = self::get($key, $default);
 		self::unset($key);
 		return $value;
@@ -30,6 +33,7 @@ class Session
 		if( ! session_id())
 			self::start();
 
+		Log::trace("Get", $key, $default);
 		return $_SESSION[$key] ?? $default;
 	}
 
@@ -38,6 +42,7 @@ class Session
 		if( ! session_id())
 			self::start();
 
+		Log::trace("Setting", $key, $value);
 		return $_SESSION[$key] = $value;
 	}
 
@@ -46,11 +51,13 @@ class Session
 		if( ! session_id())
 			self::start();
 
+		Log::trace("Unset", $key);
 		unset($_SESSION[$key]);
 	}
 
 	public static function start()
 	{
+		Log::trace('Starting session['.self::ID.']…');
 		session_name(self::ID);
 		session_start();
 	}
@@ -58,12 +65,17 @@ class Session
 	public static function close()
 	{
 		if(session_name())
+		{
+			Log::trace('Closing session['.self::ID.']…');
 			session_write_close();
+		}
 	}
 
 	public static function destroy()
 	{
 		self::start();
+		Log::trace('Destroying session['.self::ID.']…');
+
 		$_SESSION = array();
 		
 		if(ini_get("session.use_cookies"))
