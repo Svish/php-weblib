@@ -5,6 +5,8 @@ use Session, Message, Mustache;
 
 /**
  * Helper: Returns HTML for current messages.
+ * 
+ * TODO: Load async via js.
  */
 class Messages
 {
