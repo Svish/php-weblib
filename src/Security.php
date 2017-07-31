@@ -32,7 +32,7 @@ class Security
 		array_unshift($roles, 'login');
 
 		// Check roles
-		if( ! $user->has_roles($roles))
+		if( ! $user->has_roles(...$roles))
 		{
 			Log::warn('Requires:', $roles, '; Has:', $user->roles);
 			throw new \Error\Forbidden($roles);
@@ -56,7 +56,7 @@ class Security
 			return false;
 
 		array_unshift($roles, 'login');
-		if( ! $user->has_roles($roles))
+		if( ! $user->has_roles(...$roles))
 			return false;
 
 		return true;

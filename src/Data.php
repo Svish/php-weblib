@@ -5,7 +5,7 @@
  */
 class Data implements JsonSerializable
 {
-	protected $data = [];
+	private $_data = [];
 
 	public function __construct(array $data = null)
 	{
@@ -17,8 +17,8 @@ class Data implements JsonSerializable
 
 	public function set(array $data): self
 	{
-		foreach($data as $k => $v)
-			$this->{$k} = $v;
+		foreach($data as $key => $value)
+			$this->{$key} = $value;
 		
 		return $this;
 	}
@@ -32,12 +32,12 @@ class Data implements JsonSerializable
 
 	public function __get($key)
 	{
-		return $this->data[$key] ?? null;
+		return $this->_data[$key] ?? null;
 	}
 
 	public function __set($key, $value)
 	{
-		$this->data[$key] = $value;
+		$this->_data[$key] = $value;
 	}	
 
 	public function __isset($key)
@@ -47,13 +47,15 @@ class Data implements JsonSerializable
 	
 	public function __unset($key)
 	{
-		unset($this->data[$key]);
+		unset($this->_data[$key]);
 	}
 
 	public function __call($method, $args)
 	{
-		if(is_callable($this->data[$method] ?? false))
-			return call_user_func_array($this->data[$method], $args);
+		if(is_callable($this->_data[$method] ?? false))
+			return call_user_func_array($this->_data[$method], $args);
+		else
+			throw new \Error\NotImplemented(static::class.'->'.$method);
 	}
 
 
@@ -75,30 +77,35 @@ class Data implements JsonSerializable
 			return [];
 
 		// Get json data
-		$data = $this->jsonData();
+		$_data = $this->toArray();
 
 		// All
 		if($keys === true)
-			return $data;
+			return $_data;
 
 		// Only whitelisted
-		return array_whitelist($data, static::SERIALIZE);
+		return array_whitelist($_data, static::SERIALIZE);
 	}
 
-	public function jsonData(): array
+	protected function data(): iterable
+	{
+		return $this->_data;
+	}
+
+	public function toArray(): array
 	{
 		return ['__type' => get_class($this)]
-			+ $this->data;
+			+ $this->_data;
 	}
 
-	public static function from($data)
+	public static function from(array $data)
 	{
 		$class = array_remove($data, '__type');
 
 		return Reflect::pre_construct($class ?? static::class,
 			function ($obj) use ($data)
 			{
-				$obj->data = $data;
+				$obj->_data = $data;
 			});
 	}
 }
