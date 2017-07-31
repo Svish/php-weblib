@@ -4,8 +4,10 @@ namespace Error;
 
 /**
  * 400 Unknown Reset Token
+ * 
+ * Unknown user OR reset token.
  */
-class UnknownResetToken extends UserError
+class UnknownResetToken extends User
 {
 	public function __construct()
 	{

@@ -3,14 +3,14 @@
 namespace Error;
 
 /**
- * 501 Internal Server Error.
+ * 501 Internal Server Error
  *
- * Used for hiding non-UserError.
+ * When a method does not exist or has not been implemented yet.
  */
-class NotImplemented extends HttpException
+class NotImplemented extends Internal
 {
-	public function __construct(\Throwable $reason = null)
+	public function __construct($method)
 	{
-		parent::__construct(501, null, $reason);
+		parent::__construct(501, "Method does not exist: $method");
 	}
 }

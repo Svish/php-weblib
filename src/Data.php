@@ -68,7 +68,7 @@ class Data implements JsonSerializable
 
 		// Sanity check...
 		if( ! is_bool($keys) && ! is_array($keys))
-			throw new \Exception(get_class($this).'::SERIALIZE must be array of keys to serialize, or boolean (true=all, false=none)');
+			throw new \Error\Oops("$this::SERIALIZE must be array of keys to serialize, or boolean (true=all, false=none)");
 		
 		// None (default)
 		if($keys === false || $keys == [])

@@ -1,5 +1,7 @@
 <?php
 
+use Error\PageNotFound;
+
 class Website
 {
 	protected $tokens = [
@@ -64,11 +66,11 @@ class Website
 		try
 		{
 			if( ! class_exists($handler))
-				 throw new Exception("Handler class '$handler' does not exist.");
+				 throw new Oops("Handler class '$handler' does not exist.");
 		}
 		catch(Exception $e)
 		{
-			throw new Error\PageNotFound($this->path, $e);
+			throw new PageNotFound(null, $e);
 		}
 		return new $handler;
 	}
@@ -84,7 +86,7 @@ class Website
 		Log::groupEnd();
 		
 		if($route['handler'] === null)
-			throw new Error\PageNotFound($path);
+			throw new PageNotFound;
 
 		return $route;
 	}

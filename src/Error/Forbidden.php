@@ -4,8 +4,10 @@ namespace Error;
 
 /**
  * 403 Forbidden
+ * 
+ * User has no access.
  */
-class Forbidden extends UserError
+class Forbidden extends User
 {
 	public function __construct(array $required_roles)
 	{

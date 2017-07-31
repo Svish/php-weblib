@@ -10,16 +10,25 @@ use View\ErrorJson;
  */
 class Handler
 {
+	/**
+	 * @see http://php.net/manual/en/function.set-exception-handler.php
+	 */
 	public function __invoke(\Throwable $e = null)
 	{
-		// Wrap in Internal if not UserError
-		if( ! $e instanceof UserError)
-			$e = new Internal($e);
+		// Wrap in Internal if not User error
+		if( ! $e instanceof User && ! $e instanceof Internal)
+			$e = new Internal(500, null, $e);
 
 		// Log
 		$log = $e instanceof Internal ? 'error_raw' : 'warn_raw';
 		Log::$log(get_class($e), $e->getMessage());
-		Log::trace_raw($e->getFile(), $e->getLine());
+		if(ENV == 'dev' || $user->has_roles('admin'))
+		{
+			if($e->actualReason ?? false)
+				Log::trace_raw(" └ Actual reason: {$e->actualReason}");
+			Log::trace_raw(" └ ", $e->getTraceAsString());
+			Log::trace_raw(" └ ", $e->getFile(), $e->getLine());
+		}
 
 		// Add message
 		Message::exception($e);

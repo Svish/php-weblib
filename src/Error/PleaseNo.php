@@ -5,15 +5,14 @@ namespace Error;
 /**
  * 403 Forbidden
  *
- * Things that could happen, but shouldn't,
- * unless the user is messing with something...
+ * Things not supposed to happen unless a user is messing with something.
  */
-class PleaseNo extends UserError
+class PleaseNo extends User
 {
 	public $actualReason;
-	public function __construct(string $actualReason)
+	public function __construct(string $actualReason, \Throwable $e = null)
 	{
-		parent::__construct(403, []);
+		parent::__construct(403, [], $e);
 		$this->actualReason = $actualReason;
 	}
 }

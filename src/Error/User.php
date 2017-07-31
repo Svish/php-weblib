@@ -6,7 +6,7 @@ use Text;
 /**
  * 4xx User errors.
  */
-abstract class UserError extends HttpException
+abstract class User extends HttpException
 {
 	public function __construct(int $code, $message = [], \Throwable $reason = null)
 	{

@@ -7,10 +7,10 @@ namespace Error;
  *
  * Used for e.g. database entities, not pages.
  */
-class NotFound extends UserError
+class NotFound extends User
 {
-	public function __construct($id, $what)
+	public function __construct($id, $what, \Throwable $reason = null)
 	{
-		parent::__construct(404, [$id, $what]);
+		parent::__construct(404, [$id, $what], $reason);
 	}
 }

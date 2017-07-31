@@ -5,7 +5,7 @@ namespace Error;
 /**
  * 400 Key constraint
  */
-class KeyConstraint extends UserError
+class KeyConstraint extends User
 {
 	public function __construct(\PdoException $e)
 	{

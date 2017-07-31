@@ -5,7 +5,7 @@ namespace Error;
 /**
  * 400 Validation failed
  */
-class ValidationFailed extends UserError
+class ValidationFailed extends User
 {
 	public $errors;
 	public $subject;

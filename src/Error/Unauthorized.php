@@ -4,8 +4,10 @@ namespace Error;
 
 /**
  * 401 Unauthorized
+ * 
+ * User needs to login.
  */
-class Unauthorized extends UserError
+class Unauthorized extends User
 {
 	public function __construct()
 	{
