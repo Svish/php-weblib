@@ -1,6 +1,9 @@
 <?php
 namespace View;
+
 use Error\HttpException;
+use Log;
+
 
 /**
  * Html error page.
@@ -11,26 +14,39 @@ class ErrorHtml extends \View\Layout
 {
 	public function __construct(HttpException $e)
 	{
-		parent::__construct([
+		$details = self::details($e);
+
+		return parent::__construct([
 				'status' => $e->getHttpStatus(),
 				'title' => $e->getHttpTitle(),
-				'debug' => self::collect_xdebug($e),
+				'full' => $details,
 			], 'error');
 	}
 	
 
-	public static function collect_xdebug(\Throwable $e = null)
+	/**
+	 * 
+	 * @return string HTML debug info.
+	 */
+	public static function details(\Throwable $e = null)
 	{
-		if( ! $e) return null;
+		if( ! $e)
+			return null;
+
+		// Only supply details in DEV or to admin
+		if( ENV !== 'dev' AND ! Security::check('admin'))
+			return null;
+
+		Log::trace('Getting details from', isset($e->xdebug_message) ? 'XDebug' : get_class($e), '…');
 
 		$msg = isset($e->xdebug_message)
 			? '<table class="xdebug">'.$e->xdebug_message.'</table>'
 			: '<pre>'
-				.'<b>'.$e->getMessage().'</b>'
+				.'<b>'.html_encode($e->getMessage()).'</b>'
 				."\r\n\r\n"
-				.$e->getTraceAsString()
+				.html_encode($e->getTraceAsString())
 				.'</pre>';
 
-		return self::collect_xdebug($e->getPrevious()) . $msg;
+		return self::details($e->getPrevious()) . "\r\n\r\n\r\n\r\n" . $msg;
 	}
 }

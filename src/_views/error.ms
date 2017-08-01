@@ -4,10 +4,7 @@
 
 {{$ content}}
 
-	{{#role.admin}}
-		{{{debug}}}
-		{{{stack}}}
-	{{/role.admin}}
+	{{{full}}}
 
 	<p class="center">
 		<img class="frame" src="https://http.cat/{{status}}">

@@ -26,7 +26,7 @@ class ErrorJson extends \View\Json
 			$data['errors'] = $e->errors;
 
 		if(Security::check('admin'))
-			$data['reason'] = self::from_win(ErrorHtml::collect_xdebug($e));
+			$data['details'] = self::from_win(ErrorHtml::details($e));
 
 		parent::__construct($data);
 	}

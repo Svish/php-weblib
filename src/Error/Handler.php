@@ -20,15 +20,10 @@ class Handler
 			$e = new Internal(500, null, $e);
 
 		// Log
-		$log = $e instanceof Internal ? 'error_raw' : 'warn_raw';
+		$log = $e instanceof Internal
+			? 'error_raw'
+			: 'info_raw';
 		Log::$log(get_class($e), $e->getMessage());
-		if(ENV == 'dev' || $user->has_roles('admin'))
-		{
-			if($e->actualReason ?? false)
-				Log::trace_raw(" └ Actual reason: {$e->actualReason}");
-			Log::trace_raw(" └ ", $e->getTraceAsString());
-			Log::trace_raw(" └ ", $e->getFile(), $e->getLine());
-		}
 
 		// Add message
 		Message::exception($e);
@@ -55,10 +50,8 @@ class Handler
 	 */
 	public function error($severity, $message, $file, $line)
 	{
-		// Check if included in error_reporting
-		if( ! (error_reporting() & $severity))
-			return;
-
-		$this(new \ErrorException($message, 0, $severity, $file, $line));
+		// If severity is included in error_reporting
+		if(error_reporting() & $severity)
+			$this(new \ErrorException($message, 0, $severity, $file, $line));
 	}
 }
