@@ -1,7 +1,7 @@
 <?php
 
 namespace Mustache\Loader;
-use Security;
+use Security, Log;
 
 
 /**
@@ -30,22 +30,28 @@ class Filesystem extends \Mustache_Loader_FilesystemLoader
 	 */
 	protected function loadFile($name)
 	{
+		Log::trace("Loading file '$name'…");
 		$contents = parent::loadFile($name);
 
-		return preg_replace_callback(self::ACCESS_PRAGMA, [$this, 'roles'], $contents);
+		return preg_replace_callback(self::ACCESS_PRAGMA, [$this, '_roles'], $contents);
 	}
 
-	protected function roles($roles)
+
+	/**
+	 * Does security check on given roles.
+	 * 
+	 * @see Security::require
+	 */
+	private function _roles(array $roles): void
 	{
 		// Split roles into array
-		$roles = preg_split('/\s*,\s*/', $roles[1] ?? '', null, PREG_SPLIT_NO_EMPTY);
+		$roles = $roles[1] ?? '';
+		$roles = preg_split('/\s*,\s*/', $roles, null, PREG_SPLIT_NO_EMPTY);
 		$roles = array_map_callbacks($roles, 'trim', 'strtolower');
+
+		Log::trace("Checking roles ", $roles, "…");
 
 		// Secure access (throws if no access)
 		Security::require($roles);
-
-		// Remove pragma tag
-		return null;
 	}
-
 }

@@ -22,7 +22,7 @@ class Mustache extends View
 		$this->_template = $template ?? PATH;
 	}
 
-	
+
 
 	public function render(string $mime): string
 	{
@@ -36,7 +36,7 @@ class Mustache extends View
 					if( ! headers_sent($file, $line))
 						header('content-type: text/html; charset=utf-8');
 
-					return Ms::engine([], $this->_template)
+					return Ms::engine($this->_template, [])
 						->render($this->_template, $this);
 				}
 				catch(UnknownTemplate $e)
@@ -49,7 +49,7 @@ class Mustache extends View
 		}
 	}
 
-	
+
 
 	public function __get($key)
 	{
