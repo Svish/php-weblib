@@ -21,7 +21,7 @@ class Session
 
 	public static function unget($key, $default = null)
 	{
-		Log::trace("Unget", $key, $default);
+		Log::trace("Unget", $key, "(default=", $default, ")");
 
 		$value = self::get($key, $default);
 		self::unset($key);
@@ -33,7 +33,7 @@ class Session
 		if( ! session_id())
 			self::start();
 
-		Log::trace("Get", $key, $default);
+		Log::trace("Get", $key, "(default=", $default, ")");
 		return $_SESSION[$key] ?? $default;
 	}
 
