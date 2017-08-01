@@ -40,11 +40,11 @@ class Reflect
 	 */
 	public static function classes_in_namespace(string $ns): Generator
 	{
-		$dir = SRC.$ns.DIRECTORY_SEPARATOR;
+		$dir = SRC.$ns.DS;
 		foreach(glob("$dir*.php") as $file)
 		{
 			$class = substr($file, strlen(SRC), -4);
-			$class = str_replace(DIRECTORY_SEPARATOR, '\\', $class);
+			$class = str_replace(DS, '\\', $class);
 			if(class_exists($class))
 				yield $class;
 		}

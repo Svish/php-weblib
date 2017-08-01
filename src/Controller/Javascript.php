@@ -17,12 +17,8 @@ class Javascript extends Cached
 	const URL = 'https://closure-compiler.appspot.com/compile';
 	const EXT = '.js';
 
-	const APP = SRC.'_js'
-			.DIRECTORY_SEPARATOR;
-	const LIB = __DIR__
-			.DIRECTORY_SEPARATOR.'..'
-			.DIRECTORY_SEPARATOR.'_js'
-			.DIRECTORY_SEPARATOR;
+	const APP = SRC.'_js'.DS;
+	const LIB = __DIR__.DS.'..'.DS.'_js'.DS;
 
 	private $_paths;
 	private $_files;
@@ -86,7 +82,6 @@ class Javascript extends Cached
 	public function before(array &$info)
 	{
 		$this->_files = $this->_paths[$info['params'][1]] ?? null;
-
 		if( ! $this->_files)
 			throw new PageNotFound;
 

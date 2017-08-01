@@ -13,7 +13,7 @@ use lessc;
  */
 class Less extends Cached
 {
-	const DIR = SRC.'_less'.DIRECTORY_SEPARATOR;
+	const DIR = SRC.'_less'.DS;
 	const EXT = '.less';
 
 	private $_paths;

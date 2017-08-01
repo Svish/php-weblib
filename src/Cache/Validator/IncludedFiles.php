@@ -19,8 +19,8 @@ class IncludedFiles extends File
 	{
 		$this->files = array_filter(get_included_files(), function($s) 
 			{
-				return strpos($s, 'vendor'.DIRECTORY_SEPARATOR) === false
-					&& strpos($s, '.cache'.DIRECTORY_SEPARATOR) === false;
+				return strpos($s, 'vendor'.DS) === false
+					&& strpos($s, '.cache'.DS) === false;
 			});
 
 		return parent::__invoke($time);

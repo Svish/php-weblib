@@ -5,7 +5,7 @@
  */
 class Cache
 {
-	const DIR = ROOT.'.cache'.DIRECTORY_SEPARATOR;
+	const DIR = ROOT.'.cache'.DS;
 	
 	protected $id;
 	protected $dir;
@@ -25,7 +25,7 @@ class Cache
 	{
 		// Set cache directory
 		$this->id = $id;
-		$this->dir = self::DIR.$id.DIRECTORY_SEPARATOR;
+		$this->dir = self::DIR.$id.DS;
 
 		// Unless first is null, add default file validator
 		if(null !== reset($cache_validators))

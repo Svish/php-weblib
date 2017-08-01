@@ -15,7 +15,7 @@ namespace View\Helper;
  */
 class Svg
 {
-	const DIR = SRC.'_icons'.DIRECTORY_SEPARATOR;
+	const DIR = SRC.'_icons'.DS;
 
 	public function __invoke($name, $render = null)
 	{

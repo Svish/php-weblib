@@ -12,7 +12,7 @@ trait WinPathFix
 {
 	private static function to_win(string $path): string
 	{
-		$path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+		$path = str_replace(['/', '\\'], DS, $path);
 		return IS_WIN ? utf8_decode($path) : $path;
 	}
 	

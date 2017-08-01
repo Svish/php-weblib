@@ -12,8 +12,9 @@ Constants used
 
 ```PHP
 // System paths
-define('ROOT', realpath(__DIR__).DIRECTORY_SEPARATOR);
-define('SRC', ROOT.'src'.DIRECTORY_SEPARATOR);
+define('DS', DIRECTORY_SEPARATOR);
+define('ROOT', realpath(__DIR__).DS);
+define('SRC', ROOT.'src'.DS);
 
 // Web paths
 define('SCHEME', empty($_SERVER['HTTPS']) || $_SERVER['HTTPS']=='off' ? 'http' : 'https');

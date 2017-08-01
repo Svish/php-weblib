@@ -11,7 +11,7 @@ use HTTP;
  */
 class Svg extends Cached
 {
-	const DIR = SRC.'_icons'.DIRECTORY_SEPARATOR;
+	const DIR = SRC.'_icons'.DS;
 	const OPTS = ['fill'];
 
 	protected $parameter_whitelist = self::OPTS;

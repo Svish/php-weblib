@@ -83,7 +83,7 @@ abstract class Json extends SaveableData implements Entity, JsonSerializable
 
 	protected static final function dir()
 	{
-		return str_replace('\\', DIRECTORY_SEPARATOR, strtolower(static::class)).DIRECTORY_SEPARATOR;
+		return str_replace('\\', DS, strtolower(static::class)).DS;
 	}
 
 
