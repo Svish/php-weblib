@@ -1,5 +1,8 @@
 <?php
 
+namespace Candy;
+
+
 trait MemberLambdaFix
 {
 	public function __call($method, $args)

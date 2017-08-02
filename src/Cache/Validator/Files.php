@@ -1,16 +1,19 @@
 <?php
 
 namespace Cache\Validator;
+
 use Log;
 
-/**
- * Checks if given files have changed.
- */
-class File
-{
-	use \WinPathFix;
 
+/**
+ * Invalidates if any listed files have changes.
+ * 
+ * TODO: Tests.
+ */
+class Files implements \Cache\Validator
+{
 	protected $files;
+
 
 	/**
 	 * @param $files Files to check.
@@ -20,18 +23,21 @@ class File
 		$this->files = $files;
 	}
 
+
 	/**
 	 * @return FALSE if any given files have changed since $time.
 	 */
-	public function __invoke($time)
+	public function __invoke(int $time): bool
 	{
 		foreach($this->files as $f)
-			if(filemtime($f) > $time)
+			if(filemtime(self::to_win($f)) > $time)
 			{
-				$f = self::from_win($f, true);
-				Log::trace("$f has changed");
+				Log::trace('File', self::from_win($f, true), 'has changed.');
 				return false;
 			}
 		return true;
 	}
+
+
+	use \Candy\WinPathFix;
 }

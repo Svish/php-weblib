@@ -122,5 +122,5 @@ abstract class Json extends SaveableData implements Entity, JsonSerializable
 		throw new Error\NotImplemented;
 	}
 
-	use \WinPathFix;
+	use \Candy\WinPathFix;
 }

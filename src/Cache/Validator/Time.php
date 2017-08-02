@@ -1,10 +1,14 @@
 <?php
 namespace Cache\Validator;
 
+use Log;
+
 /**
- * Checks if TTL has passed.
+ * Invalidates if TTL has passed.
+ * 
+ * TODO: Tests.
  */
-class Time
+class Time implements \Cache\Validator
 {
 	protected $ttl;
 
@@ -19,7 +23,7 @@ class Time
 	/**
 	 * @return FALSE if $time is older than TTL.
 	 */
-	public function __invoke($time)
+	public function __invoke(int $time): bool
 	{
 		$age = time() - $time;
 		$valid = $age <= $this->ttl;

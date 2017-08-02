@@ -1,5 +1,8 @@
 <?php
 
+namespace Candy;
+
+
 /**
  * Candy trait for nicer looking "sub class" chaining.
  * 
@@ -7,7 +10,7 @@
  * 	      =>
  * 	   (new Model\foo(1,2))->bar()
  */
-trait CandyNew
+trait NewChain
 {
 	public static function __callStatic($name, $args)
 	{

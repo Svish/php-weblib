@@ -1,6 +1,9 @@
 <?php
 
+namespace Candy;
+
 define('IS_WIN', stripos(PHP_OS, 'win') === 0);
+
 
 /**
  * Methods for fixing paths if on windows.

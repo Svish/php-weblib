@@ -5,5 +5,5 @@
  */
 abstract class Model
 {
-	use CandyNew;
+	use \Candy\NewChain;
 }

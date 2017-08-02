@@ -1,7 +1,6 @@
 <?php
 
 namespace Email;
-use InstanceCallable;
 use Config, Markdown;
 
 /**
@@ -17,7 +16,7 @@ use Config, Markdown;
  */
 class Smtp
 {
-	use InstanceCallable;
+	use \Candy\InstanceCallable;
 
 	public function __construct()
 	{

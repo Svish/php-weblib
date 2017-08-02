@@ -11,7 +11,7 @@ use Bitworking\Mimeparse;
  */
 abstract class View
 {
-	use CandyNew;
+	use \Candy\NewChain;
 
 	protected $_accept = [];
 

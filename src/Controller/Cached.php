@@ -1,8 +1,12 @@
 <?php
 
 namespace Controller;
-use HTTP, Cache, Log;
+
 use Geekality\ConsoleLog;
+use Cache\I18N as Cache;
+
+use HTTP, Log;
+
 
 /**
  * Base controller which handles caching of content

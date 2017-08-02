@@ -2,6 +2,8 @@
 
 /**
  * Cache helper.
+ * 
+ * TODO: Tests.
  */
 class Cache
 {
@@ -25,7 +27,7 @@ class Cache
 	{
 		// Set cache directory
 		$this->id = $id;
-		$this->dir = self::DIR.$id.DS;
+		$this->dir = static::DIR.$id.DS;
 
 		// Unless first is null, add default file validator
 		if(null !== reset($cache_validators))
@@ -38,11 +40,14 @@ class Cache
 			if(is_int($v))
 				$this->valid[] = new Cache\Validator\Time($v);
 
-			// array: list of files to check
+			// string: Directory to watch
+			elseif(is_string($v))
+				$this->valid[] = new Cache\Validator\Directory($v);
+			// array: List of files to check
 			elseif(is_array($v))
-				$this->valid[] = new Cache\Validator\File($v);
+				$this->valid[] = new Cache\Validator\Files($v);
 
-			// callable: callable to call
+			// callable: Callable to call
 			elseif(is_callable($v))
 				$this->valid[] = $v;
 		}

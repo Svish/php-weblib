@@ -1,8 +1,8 @@
 <?php
 
-/**
- * Instance.
- */
+namespace Candy;
+
+
 trait InstanceCallable
 {
 	use Instance;

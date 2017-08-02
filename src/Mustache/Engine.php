@@ -1,7 +1,7 @@
 <?php
 
 namespace Mustache;
-use Cache;
+use Cache\I18N as Cache;
 
 use Mustache\Loader\CascadingFilesystem as Loader;
 use Mustache\Loader\Filesystem as File;

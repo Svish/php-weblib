@@ -3,9 +3,11 @@
 namespace Cache\Validator;
 
 /**
- * Checks if any included files have changed.
+ * Invalidates if any included files have changes.
+ * 
+ * TODO: Tests.
  */
-class IncludedFiles extends File
+class IncludedFiles extends Files
 {
 	public function __construct()
 	{
@@ -15,7 +17,7 @@ class IncludedFiles extends File
 	/**
 	 * @returns FALSE if any included files have changed since $time.
 	 */
-	public function __invoke($time)
+	public function __invoke(int $time): bool
 	{
 		$this->files = array_filter(get_included_files(), function($s) 
 			{

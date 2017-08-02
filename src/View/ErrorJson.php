@@ -11,8 +11,6 @@ use Security;
  */
 class ErrorJson extends \View\Json
 {
-	use \WinPathFix;
-
 	public function __construct(HttpException $e)
 	{
 		$message = new \View\Helper\Messages;
@@ -31,6 +29,7 @@ class ErrorJson extends \View\Json
 		parent::__construct($data);
 	}
 
+	use \Candy\WinPathFix;
 }
 
 

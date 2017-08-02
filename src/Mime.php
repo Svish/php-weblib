@@ -9,7 +9,7 @@
  */
 class Mime
 {
-	use Instance;
+	use \Candy\Instance;
 
 	public static function get($path)
 	{
