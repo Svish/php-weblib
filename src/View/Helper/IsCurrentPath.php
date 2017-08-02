@@ -1,7 +1,7 @@
 <?php
 
 namespace View\Helper;
-use Mustache_LambdaHelper;
+use Mustache_LambdaHelper as LambdaHelper;
 
 
 /**
@@ -14,14 +14,10 @@ use Mustache_LambdaHelper;
  */
 class IsCurrentPath
 {
-	public function __invoke($text, Mustache_LambdaHelper $render = null)
+	public function __invoke($text, LambdaHelper $render = null)
 	{
 		$text = $render ? $render($text) : $text;
-
-		$item = explode('/', $text);
-		$path = explode('/', trim(PATH, '/'));
-
-		if(reset($item) == reset($path))
+		if(starts_with($text, PATH))
 			return 'current';
 
 		return $text;

@@ -1,8 +1,9 @@
 <?php
 
 namespace View\Helper;
-use ReflectionFunction, Mustache_LambdaHelper;
-
+use ReflectionFunction as Func;
+use Mustache_LambdaHelper as LambdaHelper;
+use Log;
 
 /**
  * Helper: PHP Function wrapper
@@ -22,7 +23,7 @@ class PhpFunction
 	private $function;
 	public function __construct($function)
 	{
-		$this->function = new ReflectionFunction($function);
+		$this->function = new Func($function);
 
 		// Check required parameter count
 		if(1 != $this->function->getNumberOfRequiredParameters())
@@ -30,8 +31,9 @@ class PhpFunction
 	}
 
 
-	public function __invoke($text, Mustache_LambdaHelper $render = null)
+	public function __invoke($text, LambdaHelper $render = null)
 	{
+		Log::trace($this->function->getShortName().'(', $text, ')');
 		$text = $this->function->invokeArgs([$text]);
 		return $render ? $render($text) : $text;
 	}
