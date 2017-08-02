@@ -3,7 +3,15 @@
 # Simple utility functions
 
 /**
- * 
+ * @return string HTML5 encode string.
+ */
+function html_encode(string $subject): string
+{
+	return htmlspecialchars($subject, ENT_HTML5);
+}
+
+/**
+ * @return string $subject After running $callback on all matches.
  */
 function preg_match_all_callback(string $pattern, string $subject, callable $callback, ...$callback_parameters)
 {
@@ -54,6 +62,17 @@ function strval_any($subject): string
 	return strval($subject);
 }
 
+
+function iterable_reverse(iterable $it)
+{
+	foreach($it as $item)
+		$list[] = $item;
+
+	while(!is_null($item = array_pop($list)))
+		yield $item;
+}
+
+
 /**
  * @return mixed Array without rejected items.
  */
@@ -88,6 +107,18 @@ function array_flatten(array $array): array
 	$it = new \RecursiveArrayIterator($array);
 	$it = new \RecursiveIteratorIterator($it);
     return iterator_to_array($it, false);
+}
+
+
+/**
+ * Checks if $array contains any of $wanted.
+ * @param array $array 
+ * @param array $wanted 
+ * @return type
+ */
+function array_any(array $array, array $wanted): bool
+{
+	return array_intersect($array, $wanted) !== [];
 }
 
 
