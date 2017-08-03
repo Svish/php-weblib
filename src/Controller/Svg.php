@@ -11,28 +11,20 @@ use HTTP, Log;
  */
 class Svg extends Cached
 {
-	const DIR = SRC.'_icons'.DS;
+	use \Candy\SafePath;
+
+	const DIR = 'src'.DS.'_icons'.DS;
 	const OPTS = ['fill', 'opacity'];
 
+	// Cached should cache these
 	protected $parameter_whitelist = self::OPTS;
 
-	private $files;
-	private $file;
-	public function __construct()
-	{
-		parent::__construct();
 
-		// Files
-		$this->files = glob(self::DIR.'*.svg');
-	}
 
+	private $_file;
 	public function before(array &$info)
 	{
-		$this->file = realpath(self::DIR.$info['params'][1]);
-
-		if( ! in_array($this->file, $this->files))
-			throw new PageNotFound;
-
+		$this->_file = self::safe(self::DIR.$info['params'][1]);
 		parent::before($info);
 	}
 
@@ -41,7 +33,7 @@ class Svg extends Cached
 	protected function cache_valid($cached_time)
 	{
 		return parent::cache_valid($cached_time)
-		   and $cached_time >= filemtime($this->file);
+		   and $cached_time >= filemtime($this->_file);
 	}
 	
 
@@ -50,7 +42,7 @@ class Svg extends Cached
 	{
 		// Load file
 		$doc = new \DOMDocument;
-		$doc->load($this->file);
+		$doc->load($this->_file);
 
 		// Set id attribute
 		$svg = $doc->documentElement;
