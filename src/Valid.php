@@ -3,12 +3,14 @@
 
 /**
  * Validator.
+ * 
+ * TODO: Tests.
  */
 class Valid
 {
 	public static function check_array(array $subject, iterable $rule_set)
 	{
-		self::check(new Data($subject), $rule_set);
+		static::check(new Data($subject), $rule_set);
 	}
 
 	public static function check(Data $subject, iterable $rule_set)
@@ -21,7 +23,7 @@ class Valid
 				$rules = [$rules];
 
 			// If allowed empty, and value is empty, skip other rules
-			if( ! in_array('not_empty', $rules) and ! self::not_empty($value))
+			if( ! in_array('not_empty', $rules) and static::empty($value))
 				continue;
 
 
@@ -92,9 +94,16 @@ class Valid
 
 
 
+	public static function empty($value): bool
+	{
+		return in_array($value, [null, false, '', []], true);
+	}
+
+
+
 	public static function not_empty($value): bool
 	{
-		return ! in_array($value, [null, false, '', []], true);
+		return ! static::empty($value);
 	}
 
 
@@ -158,7 +167,7 @@ class Valid
 	 */
 	public static function flexi_time($value): bool
 	{
-		$valid = preg_match('/^'.self::FLEXI_TIME.'$/', $value, $x);
+		$valid = preg_match('/^'.static::FLEXI_TIME.'$/', $value, $x);
 		
 		if( ! $valid)
 			return false;
@@ -166,7 +175,7 @@ class Valid
 		extract($x);
 
 		// Check month
-		if($month ?? null AND ! self::within($month, 1, 12))
+		if($month ?? null AND ! static::within($month, 1, 12))
 			return false;
 
 		// Check date
@@ -174,15 +183,15 @@ class Valid
 			return false;
 
 		// Check hour
-		if($hour ?? null AND ! self::within($hour, 0, 23))
+		if($hour ?? null AND ! static::within($hour, 0, 23))
 			return false;
 
 		// Check minute
-		if($min ?? null AND ! self::within($min, 0, 59))
+		if($min ?? null AND ! static::within($min, 0, 59))
 			return false;
 
 		// Check second
-		if($sec ?? null AND ! self::within($sec, 0, 59))
+		if($sec ?? null AND ! static::within($sec, 0, 59))
 			return false;
 
 		return true;

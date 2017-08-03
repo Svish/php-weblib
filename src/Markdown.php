@@ -7,6 +7,10 @@ use League\CommonMark\HtmlRenderer;
 use Webuni\CommonMark\TableExtension\TableExtension;
 use Webuni\CommonMark\AttributesExtension\AttributesExtension;
 
+use View\Helper\BibleRef;
+use Valid as Test;
+
+
 /**
  * Markdown helper.
  *
@@ -14,27 +18,39 @@ use Webuni\CommonMark\AttributesExtension\AttributesExtension;
  */
 class Markdown
 {
-	private static $c;
-	
-	public static function render(string $markdown): string
+	const EXT = '.md';
+
+
+	private $_converter;
+	private $_refs;
+
+
+	public function __construct()
 	{
-		if( ! self::$c)
-		{
-			$e = Environment::createCommonMarkEnvironment();
-			$e->addExtension(new AttributesExtension());
-			$e->addExtension(new TableExtension());
-			//$e->mergeConfig([]);
+		$e = Environment::createCommonMarkEnvironment();
+		$e->addExtension(new AttributesExtension());
+		$e->addExtension(new TableExtension());
+		$this->_converter = new Converter(new DocParser($e), new HtmlRenderer($e));
 
-			self::$c = new Converter(new DocParser($e), new HtmlRenderer($e));
-		}
+		$this->_refs = new BibleRef;
+	}
+	
+	private function render(string $markdown): string
+	{
+		if(Test::empty($markdown))
+			return '';
 
-		return self::$c->convertToHtml($markdown);
+		$markdown = $this->_refs->md_replace($markdown);
+
+		return $this->_converter->convertToHtml($markdown);
 	}
 
-	public static function render_file(string $path): string
+	private function render_file(string $path): string
 	{
 		return file_exists($path)
-			? self::render(file_get_contents($path))
+			? $this->render(file_get_contents($path))
 			: false;
 	}
+
+	use \Candy\InstanceCallable;
 }

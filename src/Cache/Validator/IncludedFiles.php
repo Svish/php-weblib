@@ -2,6 +2,9 @@
 
 namespace Cache\Validator;
 
+use Log;
+
+
 /**
  * Invalidates if any included files have changes.
  * 
@@ -19,11 +22,13 @@ class IncludedFiles extends Files
 	 */
 	public function __invoke(int $time): bool
 	{
-		$this->files = array_filter(get_included_files(), function($s) 
+		$count = 0;
+		$this->files = array_filter(get_included_files(), function($s) use(&$count)
 			{
-				return strpos($s, 'vendor'.DS) === false
-					&& strpos($s, '.cache'.DS) === false;
+				$count++;
+				return strpos($s, '.cache'.DS) === false;
 			});
+		Log::trace("Checking {$count} included files…");
 
 		return parent::__invoke($time);
 	}

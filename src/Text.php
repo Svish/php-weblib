@@ -41,7 +41,7 @@ class Text
 	private static function implode($item)
 	{
 		return is_array($item)
-			? json_encode($item)
+			? json_encode($item, JSON_UNESCAPED_UNICODE)
 			: $item;
 	}
 }

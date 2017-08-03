@@ -55,7 +55,7 @@ function strval_any($subject): string
 
 	if(is_array($subject))
 	{
-		$str = json_encode($subject, JSON_NUMERIC_CHECK);
+		$str = json_encode($subject, JSON_UNESCAPED_UNICODE|JSON_NUMERIC_CHECK);
 		return str_truncate($str, 35);
 	}
 
@@ -68,8 +68,9 @@ function iterable_reverse(iterable $it)
 	foreach($it as $item)
 		$list[] = $item;
 
-	while(!is_null($item = array_pop($list)))
-		yield $item;
+	if(isset($list))
+		while(!is_null($item = array_pop($list)))
+			yield $item;
 }
 
 

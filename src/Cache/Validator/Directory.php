@@ -13,7 +13,7 @@ use Log;
  */
 class Directory extends Files
 {
-	protected $dir;
+	private $_dir;
 
 
 	public function __construct(string $dir)
@@ -22,21 +22,22 @@ class Directory extends Files
 		if($x != '/' AND $x != '\\')
 			throw new Oops("Directory $dir is missing a trailing slash.");
 
-		$this->dir = $dir;
+		$this->_dir = $dir;
 	}
 
 
 	public function __invoke(int $time): bool
 	{
 		// Check directory
-		if(filemtime($this->dir) > $time)
+		Log::trace("Checking directory {$this->_dir}");
+		if(filemtime($this->_dir) > $time)
 		{
-			Log::trace('Directory', self::from_win($this->dir, true), 'has changed.');
+			Log::trace('Directory', self::from_win($this->_dir, true), 'has changed.');
 			return false;
 		}
 
 		// Check files IN directory
-		$this->files = glob("{$this->dir}*");
+		$this->files = glob("{$this->_dir}*");
 		return parent::__invoke($time);
 	}
 

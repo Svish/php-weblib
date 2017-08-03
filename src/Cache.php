@@ -90,6 +90,7 @@ class Cache
 				$valid = false;
 			}
 
+		Log::trace($key, 'is', $valid ? 'VALID' : 'INVALID');
 		return $valid;
 	}
 

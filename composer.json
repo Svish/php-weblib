@@ -6,7 +6,8 @@
 	{
 		"php": ">=7.1",
 		"geekality/consolelog": "*",
-		"bitworking/mimeparse": "2.*",		
+		"dflydev/dot-access-data": "1.*",
+		"bitworking/mimeparse": "2.*",
 		"oyejorge/less.php": "1.*",
 		"mustache/mustache": "2.*",
 		"league/commonmark": "0.*",

@@ -26,12 +26,15 @@ class Reflect
 	{
 		$obj = new \ReflectionClass($class);
 		$ctor = $obj->getConstructor();
+		
 		$obj = $obj->newInstanceWithoutConstructor();
-
 		$pre_ctor($obj);
-
+		
 		if($ctor)
+		{
+			$ctor->setAccessible(true);
 			$ctor->invoke($obj);
+		}
 		return $obj;
 	}
 

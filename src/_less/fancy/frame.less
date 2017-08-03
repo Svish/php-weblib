@@ -1,0 +1,79 @@
+/**
+ * Fancy frames
+ */
+.frames>*,
+.frame
+{
+	.box-shadow(0, 0, 10px, @shadow-color);
+	border: 2px solid fadein(@shadow-color, 5%);
+	border-radius: 5px;
+	background: #fff;
+	display: inline-block;
+
+	img, span
+	{
+		border-radius: 5px;
+		display: block;
+	}
+	img
+	{
+		border: 1px solid @shadow-color;
+		.box-shadow(0, 0, 10px, @shadow-color);
+	}
+}
+
+// Many frames
+.frames>*
+{
+	margin: 0 .5em .5em 0;
+}
+
+// Special frames
+.frames>*,
+a.frame,
+div.frame
+{
+	padding: .75rem 1.15rem;
+	vertical-align: top;
+	line-height: 1em;
+
+	text-align: center;
+	color: inherit;
+
+	img:not(:last-child)
+	{
+		margin: auto auto .65em auto;
+	}
+
+	img+div
+	{
+		margin-top: .65em;
+	}
+}
+
+
+// Anchor frames
+.frames>a,
+a.frame
+{
+	// border-color: @accent2-color;
+
+	&:hover
+	{
+		.box-shadow(0, 0, 10px, fadein(@shadow-color, 10%));
+		border-color: lighten(@accent2-color, 25%);
+	}
+}
+
+
+// Responsiveness
+@media only screen and (max-width : 480px)
+{
+	.frames>*,
+	.frame
+	{
+		display: block;
+		display: block;
+		margin-right: 0;
+	}
+}

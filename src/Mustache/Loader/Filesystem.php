@@ -30,7 +30,6 @@ class Filesystem extends \Mustache_Loader_FilesystemLoader
 	 */
 	protected function loadFile($name)
 	{
-		Log::trace("Loading file '$name'…");
 		$contents = parent::loadFile($name);
 
 		return preg_replace_callback(self::ACCESS_PRAGMA, [$this, '_roles'], $contents);
@@ -48,8 +47,6 @@ class Filesystem extends \Mustache_Loader_FilesystemLoader
 		$roles = $roles[1] ?? '';
 		$roles = preg_split('/\s*,\s*/', $roles, null, PREG_SPLIT_NO_EMPTY);
 		$roles = array_map_callbacks($roles, 'trim', 'strtolower');
-
-		Log::trace("Checking roles ", $roles, "…");
 
 		// Secure access (throws if no access)
 		Security::require($roles);

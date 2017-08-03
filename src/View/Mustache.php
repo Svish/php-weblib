@@ -1,13 +1,16 @@
 <?php
 namespace View;
-use Config, Model, View;
+
 use Mustache as Ms;
 use Mustache_Exception_UnknownTemplateException as UnknownTemplate;
+
+use Log;
+
 
 /**
  * Views using Mustache templates.
  */
-class Mustache extends View
+class Mustache extends \View
 {
 	protected $_accept = ['text/html'];
 
@@ -20,6 +23,7 @@ class Mustache extends View
 	{
 		$this->_context = $context;
 		$this->_template = $template ?? PATH;
+		Log::trace(static::class, 'constructed with template', $this->_template);
 	}
 
 
@@ -35,6 +39,8 @@ class Mustache extends View
 				{
 					if( ! headers_sent($file, $line))
 						header('content-type: text/html; charset=utf-8');
+					
+					Log::trace('Rendering template', $this->_template, '…');
 
 					return Ms::engine($this->_template, [])
 						->render($this->_template, $this);
@@ -64,17 +70,26 @@ class Mustache extends View
 
 		// Constant?
 		if(defined($key))
+		{
+			Log::trace('Added constant', $key, '=', constant($key));
 			return $this->set($key, constant($key));
+		}
 
 		// Function?
 		if(Helper\PhpFunction::exists($key))
+		{
+			Log::trace('Added function', $key);
 			return $this->set($key, new Helper\PhpFunction($key));
+		}
 
 		// Helper?
 		$name = __NAMESPACE__."\\Helper\\".ucfirst($key);
 		if(class_exists($name))
+		{
+			Log::trace('Added helper', $name);
 			return $this->set($key, new $name($this));
-
+		}
+		Log::warn("Did not find '$key' in context.");
 		return false;
 	}
 

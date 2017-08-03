@@ -1,5 +1,6 @@
 <?php
 
+use Error\InternalNotFound;
 use Error\PageNotFound;
 
 class Website
@@ -66,7 +67,7 @@ class Website
 		try
 		{
 			if( ! class_exists($handler))
-				 throw new Oops("Handler class '$handler' does not exist.");
+				 throw new InternalNotFound($handler, 'route handler class');
 		}
 		catch(Exception $e)
 		{
@@ -81,7 +82,7 @@ class Website
 	{
 		$route = $this->parse_path($path);
 		Log::group();
-		Log::trace_raw('Path:', $path);
+		Log::info_raw('Path:', $path);
 		Log::trace_raw('Route:', $route);
 		Log::groupEnd();
 		

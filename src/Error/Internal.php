@@ -9,7 +9,7 @@ namespace Error;
  */
 class Internal extends HttpException
 {
-	public function __construct(int $code = 500, string $message = null, \Throwable $reason = null)
+	public function __construct(int $code = 500, $message = null, \Throwable $reason = null)
 	{
 		parent::__construct($code, $message, $reason);
 	}

@@ -7,15 +7,10 @@ class Data implements JsonSerializable
 {
 	private $_data = [];
 
-	public function __construct(array $data = null)
-	{
-		if($data)
-			$this->set($data);
-	}
 
 
 
-	public function set(array $data): self
+	public function set(iterable $data)
 	{
 		foreach($data as $key => $value)
 			$this->{$key} = $value;
@@ -87,16 +82,14 @@ class Data implements JsonSerializable
 		return array_whitelist($_data, static::SERIALIZE);
 	}
 
-	protected function data(): iterable
+
+	public function toArray(bool $includeType = true): array
 	{
-		return $this->_data;
+		return $includeType
+			? ['__type' => get_class($this)] + $this->_data
+			: $this->_data;
 	}
 
-	public function toArray(): array
-	{
-		return ['__type' => get_class($this)]
-			+ $this->_data;
-	}
 
 	public static function from(array $data)
 	{

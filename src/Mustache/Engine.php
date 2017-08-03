@@ -42,6 +42,7 @@ class Engine extends ME
 		$options += [
 			'cache' => Cache::DIR . __CLASS__,
 			'pragmas' => [ME::PRAGMA_FILTERS],
+			'entity_flags' => ENT_HTML5,
 			'strict_callables' => true,
 			'logger' => new Logger,
 			'loader' => new Loader(File::class, $templates),

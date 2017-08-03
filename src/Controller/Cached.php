@@ -49,7 +49,6 @@ abstract class Cached extends \Controller
 
 		// Check cache
 		$cached = $this->cache->get($this->cache_key);
-
 		if($cached && $this->cache_valid($cached['time']))
 		{
 			$this->cached = $cached;
@@ -58,6 +57,7 @@ abstract class Cached extends \Controller
 		}
 
 		// Otherwise, gather regular output
+		Log::trace('Started output buffering…');
 		ob_start();
 	}
 
@@ -89,9 +89,8 @@ abstract class Cached extends \Controller
 		}
 
 		// Otherwise resend cached
-		Log::trace("Found '{$this->cache_key}'");
-		http_response_code($this->cached['code']);
-		
+		Log::trace('Resending cached…');
+		HTTP::set_status($this->cached['code']);
 		foreach($this->cached['headers'] as $h)
 			header($h, false);
 
@@ -104,7 +103,6 @@ abstract class Cached extends \Controller
 	{
 		if( ! $this->cached && $this->on)
 		{
-
 			$content = ob_get_clean();
 			$time = time() - 2;
 			$lmod = gmdate('D, d M Y H:i:s T', $time);

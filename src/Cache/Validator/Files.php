@@ -29,8 +29,9 @@ class Files implements \Cache\Validator
 	 */
 	public function __invoke(int $time): bool
 	{
+		Log::trace("Checking files…");
 		foreach($this->files as $f)
-			if(filemtime(self::to_win($f)) > $time)
+			if(filemtime(self::to_win($f)) >= $time)
 			{
 				Log::trace('File', self::from_win($f, true), 'has changed.');
 				return false;

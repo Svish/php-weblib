@@ -3,7 +3,7 @@
 /**
  * Loads config files.
  * 
- * TODO: Cache when parsed.
+ * TODO: Cache when parsed?
  */
 class Config
 {
@@ -33,7 +33,7 @@ class Config
 		switch(pathinfo($path, PATHINFO_EXTENSION))
 		{
 			case 'ini':
-				return parse_ini_file($path, true, INI_SCANNER_RAW);
+				return parse_ini_file($path, true, $args[0] ?? INI_SCANNER_RAW);
 			
 			case 'json':
 				return json_decode(file_get_contents($path));

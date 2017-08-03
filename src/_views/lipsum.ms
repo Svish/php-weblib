@@ -1,6 +1,6 @@
 {{% BLOCKS }}
 {{< layout }}
-{{$ title }}Test-side{{/ title }}
+{{$ title }}HTML Ipsum{{/ title }}
 
 {{$ content}}
 
@@ -8,7 +8,14 @@
 	<h1>HTML Ipsum Presents<span>Test page this is</span></h1>
 
 	<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
-	<p>Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+	<div class="center frames">
+		<img class="loading" src="https://placehold.it/150x150">
+		<img class="loading" src="https://placehold.it/150x150">
+		<img class="loading" src="https://placehold.it/150x150">
+	</div>
+
+	<p>Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="javascript:void(0);">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
 
 	<h2>Header Level 2<span>Test page</span></h2>
 
@@ -27,6 +34,19 @@
 	</ul>
 </section>
 
+
+
+<section>
+	<h1>Badges</h1>
+	<p><span class="badge" data-name="CSS"> Not a link</span>
+	<p><a class="badge" data-name="CSS" href="javascript:void(0)"> Badge</a>
+	<p><a class="badge badge-1" data-name="CSS" href="javascript:void(0)"> Badge 1</a>
+	<p><a class="badge badge-2" data-name="CSS" href="javascript:void(0)"> Badge 2</a>
+	<p><a class="badge badge-3" data-name="CSS" href="javascript:void(0)"> Badge 3</a>
+</section>
+
+
+
 <section>
 	<h1>Code</h1>
 	<pre><code>#header h1 a {
@@ -34,8 +54,9 @@
 	width: 300px;
 	height: 80px;
 }</code></pre>
-
 </section>
+
+
 
 <section>
 	<h1>Forms</h1>
@@ -81,9 +102,13 @@
 		<p>
 			<button>{{#svg}}save{{/svg}} Enabled</button>
 			<button disabled>{{#svg}}save{{/svg}} Disabled</button>
+			<a href="javascript:void(0)" class="button">Link button</a>
+			Text
 		</p>
 	</form>
 </section>
+
+
 
 <section>
 	<h1>Definition lists</h1>
@@ -98,6 +123,8 @@
 	commodo consequat.</dd>
 	</dl>
 </section>
+
+
 
 <section>
 	<h1>Tables</h1>
@@ -156,6 +183,98 @@
 	  </tbody>
 	</table>
 </section>
+
+<hr>
+
+<section>
+	<h1>Frames</h1>
+	<div class="frames">
+		<div>Column 1</div>
+		<a href="javascript:void(0)">Column 2</a>
+		<a href="javascript:void(0)">Column 3</a>
+		<div>Column 4</div>
+		<div>
+			<img src="https://placehold.it/75x75">
+			<div>Column 5</div>
+		</div>
+		<div>Column 6</div>
+		<div>Column 7</div>
+		<div>Column 8</div>
+	</div>
+</section>
+
+<hr>
+
+<section>
+	<h1>Flex</h1>
+	<div class="flex">
+		<section>
+			<h2>Section 1</h2>
+			<img src="https://placehold.it/150x50">
+		</section>
+		<section>
+			<h2>Section 2</h2>
+			<img src="https://placehold.it/150x150">
+		</section>
+		<section>
+			<h2>Section 3</h2>
+			<img src="https://placehold.it/150x275">
+		</section>
+		<section>
+			<h2>Section 4</h2>
+			<img src="https://placehold.it/150x55">
+		</section>
+		<section>
+			<h2>Section 5</h2>
+			<img src="https://placehold.it/150x105">
+		</section>
+		<section>
+			<h2>Section 6</h2>
+			<img src="https://placehold.it/150x175">
+		</section>
+		<section>
+			<h2>Section 7</h2>
+			<img src="https://placehold.it/150x175">
+		</section>
+	</div>
+</section>
+
+<hr>
+
+<section>
+	<h1>Columns</h1>
+	<div class="columns">
+		<section>
+			<h2>Section 1</h2>
+			<img src="https://placehold.it/150x50">
+		</section>
+		<section>
+			<h2>Section 2</h2>
+			<img src="https://placehold.it/150x150">
+		</section>
+		<section>
+			<h2>Section 3</h2>
+			<img src="https://placehold.it/150x275">
+		</section>
+		<section>
+			<h2>Section 4</h2>
+			<img src="https://placehold.it/150x55">
+		</section>
+		<section>
+			<h2>Section 5</h2>
+			<img src="https://placehold.it/150x105">
+		</section>
+		<section>
+			<h2>Section 6</h2>
+			<img src="https://placehold.it/150x175">
+		</section>
+		<section>
+			<h2>Section 7</h2>
+			<img src="https://placehold.it/150x175">
+		</section>
+	</div>
+</section>
+
 
 
 {{/ content}}

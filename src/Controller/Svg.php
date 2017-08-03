@@ -3,7 +3,7 @@
 namespace Controller;
 
 use Error\PageNotFound;
-use HTTP;
+use HTTP, Log;
 
 
 /**
@@ -12,7 +12,7 @@ use HTTP;
 class Svg extends Cached
 {
 	const DIR = SRC.'_icons'.DS;
-	const OPTS = ['fill'];
+	const OPTS = ['fill', 'opacity'];
 
 	protected $parameter_whitelist = self::OPTS;
 
@@ -22,7 +22,7 @@ class Svg extends Cached
 	{
 		parent::__construct();
 
-		// Add single files
+		// Files
 		$this->files = glob(self::DIR.'*.svg');
 	}
 

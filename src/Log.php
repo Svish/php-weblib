@@ -13,7 +13,8 @@ use Geekality\ConsoleLog;
  */
 class Log
 {
-	use Instance;
+	use \Candy\Instance;
+	
 
 	const DIR = ROOT.'.logs'.DS;
 	const TYPES = [
