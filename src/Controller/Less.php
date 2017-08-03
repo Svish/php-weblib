@@ -2,10 +2,13 @@
 
 namespace Controller;
 
+use Error\InternalNotFound;
 use Error\PageNotFound;
 
-use Config, Cache, HTTP, Log;
-use lessc;
+use Less_Cache as Lessc;
+use Less_Exception_Parser as LesscException;
+
+use Cache, File, Log;
 
 
 /**
@@ -13,87 +16,85 @@ use lessc;
  */
 class Less extends Cached
 {
-	const DIR = SRC.'_less'.DS;
 	const EXT = '.less';
-
-	private $_paths;
-	private $_file;
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->_paths = array_map('basename', glob(self::DIR.'*'.self::EXT));
-	}
+	const CACHE = Cache::DIR.__CLASS__.DS;
+	const DIR = [
+		SRC.'_less'.DS,
+		__DIR__.DS.'..'.DS.'_less'.DS
+	];
 
 
-	public function before(array &$info)
-	{
-		$file = $info['params'][2].self::EXT;
-
-		if( ! in_array($file, $this->_paths))
-			throw new PageNotFound;
-
-		$this->_file = self::DIR.$file;
-		$this->compile();
-
-		parent::before($info);
-	}
-
-
-
-	public function get()
-	{
-		header('Content-Type: text/css; charset=utf-8');
-		echo implode("\r\n", [
-			"/**",
-			" * Compiled: ".date('Y-m-d H:i:s', $new['updated'] ?? time()),
-			" * By: ".__CLASS__,
-			" * Using: http://leafo.net/lessphp",
-			" * Took: " . number_format(microtime(TRUE) - $this->time, 3),
-			" */",
-			$this->data['compiled'],
-		]);
-	}
+	private $_less;
+	private $_css;
 
 
 
 	protected function cache_valid($cached_time)
 	{
 		return parent::cache_valid($cached_time)
-		   and $cached_time >= $this->data['updated'];
+		   and $cached_time >= filemtime($this->_css);
 	}
 
 
-	private function compile()
+
+	public function before(array &$info)
 	{
-		Log::group();
-		Log::trace_raw('Cached compilation of '.basename($this->_file).'…');
+		$this->_less = self::DIR[0]
+			. ($info['params'][1] ?? null)
+			. self::EXT;
 
-		$cache = new Cache(__CLASS__);
-		$cache_key = basename($this->_file).'c';
+		if( ! is_readable($this->_less))
+			throw new PageNotFound;
 
-		// Get cached if exists
-		$old = $cache->get($cache_key, ['root' => $this->_file, 'updated' => 0]);
+		$this->_compile();
 
-		// Do a cached compile
+		parent::before($info);
+	}
+
+
+
+	public function get(string $name)
+	{
+		header('Content-Type: text/css; charset=utf-8');
+		echo file_get_contents($this->_css);
+	}
+
+
+
+	private function _compile()
+	{
 		try
 		{
-			$this->time = microtime(TRUE);
-			$less = new lessc;
-			$less->setFormatter('compressed');
-			$new = $less->cachedCompile($old);
+			File::mkdir(self::CACHE);
+			$this->_css = self::CACHE.Lessc::Get([ $this->_less => WEBROOT ],
+				[
+					'compress' => true,
+					'strictMath' => true,
+					'cache_dir' => self::CACHE,
+					'indentation' => "\t",
+					'import_callback' => [$this, 'find_import'],
+				]);
 		}
-		catch(\Exception $e)
+		catch(LesscException $e)
 		{
 			Log::error("Compile failed\r\n", $e->getMessage());
-			HTTP::plain_exit(500, $e->getMessage(), true);
+			throw $e;
+		}
+	}
+
+
+
+	public function find_import($import)
+	{
+		$file = $import->path->value;
+
+		foreach(self::DIR as $dir)
+		{
+			$path = realpath($dir.$file.self::EXT);
+			if($path !== false)
+				return [$path, null];
 		}
 
-		// Set if updated
-		$this->data = $new['updated'] > $old['updated']
-			? $cache->set($cache_key, $new)
-			: $new;
-			
-		Log::groupEnd();
+		throw new InternalNotFound($file, 'Less file');
 	}
 }
