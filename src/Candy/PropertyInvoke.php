@@ -3,7 +3,7 @@
 namespace Candy;
 
 
-trait MemberLambdaFix
+trait PropertyInvoke
 {
 	public function __call($method, $args)
 	{

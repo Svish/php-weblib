@@ -13,14 +13,21 @@ use Cache, File, Log;
 
 /**
  * Handles compilation and serving of LESS files as CSS.
+ * 
+ * Looks for @imports in:
+ * 
+ *  - ./src/_less
+ *  - ./vendor/geekality/weblib/src/_less
+ *  - (same dir as .less importing)
+ * 
  */
 class Less extends Cached
 {
 	const EXT = '.less';
 	const CACHE = Cache::DIR.__CLASS__.DS;
 	const DIR = [
-		SRC.'_less'.DS,
-		__DIR__.DS.'..'.DS.'_less'.DS
+		'app' => SRC.'_less'.DS,
+		'lib' => __DIR__.DS.'..'.DS.'_less'.DS
 	];
 
 
@@ -39,7 +46,7 @@ class Less extends Cached
 
 	public function before(array &$info)
 	{
-		$this->_less = self::DIR[0]
+		$this->_less = self::DIR['app']
 			. ($info['params'][1] ?? null)
 			. self::EXT;
 
@@ -87,8 +94,9 @@ class Less extends Cached
 	public function find_import($import)
 	{
 		$file = $import->path->value;
+		$location = self::DIR + ['file' => $import->currentFileInfo['currentDirectory']];
 
-		foreach(self::DIR as $dir)
+		foreach($location as $dir)
 		{
 			$path = realpath($dir.$file.self::EXT);
 			if($path !== false)
