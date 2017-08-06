@@ -25,11 +25,13 @@ class File
 		
 		$fp = fopen($file, 'r');
 		flock($fp, LOCK_SH);
-		$contents = fread($fp, filesize($file));
+		$size = filesize($file);
+		if($size > 0)
+			$contents = fread($fp, $size);
 		flock($fp, LOCK_UN);
 		fclose($fp);
 
-		return $contents;
+		return $contents ?? '';
 	}
 
 

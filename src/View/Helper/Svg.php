@@ -12,6 +12,10 @@ namespace View\Helper;
  *     {{#svg}}send{{/svg}}
  * 
  *     {{#svg}}send;class="icon" id="send-icon"{{/svg}}
+ * 
+ * TODO: Pull file reading from this and controller to own Svg class.
+ * 	- Should ignore comments and credits attributes
+ *  - Output without whitespace
  */
 class Svg
 {

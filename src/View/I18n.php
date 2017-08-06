@@ -15,13 +15,6 @@ use DateTime;
  */
 class I18n extends Layout
 {
-	public function __construct()
-	{
-		$this->formats();
-
-		parent::__construct();
-	}
-
 	public function formats()
 	{
 		$it = new Iterator(Config::dateFormats());

@@ -5,6 +5,12 @@ namespace Controller;
 use Error\PageNotFound;
 use HTTP, Log;
 
+use DOMDocument as Xml;
+use RecursiveDirectoryIterator as Iterator;
+use RecursiveHiddenFilterIterator as Reject;
+use RecursiveExtensionFilterIterator as Accept;
+use RecursiveIteratorIterator as Recursor;
+
 
 /**
  * Handles serving of SVG files.
@@ -13,6 +19,7 @@ class Svg extends Cached
 {
 	use \Candy\SafePath;
 
+	const EXT = '.svg';
 	const DIR = 'src'.DS.'_icons'.DS;
 	const OPTS = ['fill', 'opacity'];
 
@@ -41,11 +48,11 @@ class Svg extends Cached
 	public function get($filename)
 	{
 		// Load file
-		$doc = new \DOMDocument;
-		$doc->load($this->_file);
+		$xml = new Xml;
+		$xml->load($this->_file);
 
 		// Set id attribute
-		$svg = $doc->documentElement;
+		$svg = $xml->documentElement;
 		$svg->setAttribute('id', $filename);
 
 		// Extra stuff
@@ -55,6 +62,40 @@ class Svg extends Cached
 
 		// Output
 		header('Content-Type: image/svg+xml; charset=utf-8');
-		$doc->save('php://output');
+		$xml->save('php://output');
+	}
+
+
+
+	public static function index(): iterable
+	{
+		$it = new Iterator(self::DIR, Iterator::SKIP_DOTS);
+		$it = new Reject($it);
+		$it = new Accept($it, self::EXT);
+		$it = new Recursor($it);
+
+		return $it;
+	}
+
+	public static function credits(): iterable
+	{
+		foreach(self::index() as $key => $file)
+		{
+			$svg = new Xml;
+			$svg->load($file);
+			$svg = $svg->documentElement;
+
+			$author = $svg->getAttributeNS('credits', 'author');
+			$url = $svg->getAttributeNS('credits', 'url');
+
+			if($author && $url)
+				yield [
+					'file' => $key,
+					'author' => $author,
+					'url' => $url,
+				];
+			else
+				Log::warn($key, 'is lacking credit attributes.');
+		}
 	}
 }
