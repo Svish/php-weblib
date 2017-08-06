@@ -1,0 +1,23 @@
+#content
+{
+	h1 + nav
+	{
+		margin-top: (-@trailing-margin / 2);
+	}
+
+	#toc
+	{
+		li
+		{
+			list-style-type: none;
+			&:before
+			{
+				content: "├ ";
+			}
+			&:last-child:before
+			{
+				content: "└ ";
+			}
+		}
+	}
+}
