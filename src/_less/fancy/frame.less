@@ -1,6 +1,11 @@
 /**
  * Fancy frames
  */
+.frames
+{
+	
+}
+
 .frames>*,
 .frame
 {
@@ -26,7 +31,13 @@
 .frames>*
 {
 	margin: 0 .5em .5em 0;
+	&:last-child
+	{
+		// Override defaults
+		margin-bottom: .5em
+	}
 }
+
 
 // Special frames
 .frames>*,

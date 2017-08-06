@@ -1,4 +1,18 @@
 
+@import "classes";
+
+@import "no-select";
+@import "ripple-effect";
+@import "shadows";
+
+
+.box-sizing(@model: border-box)
+{
+	-webkit-box-sizing: @model;
+	-moz-box-sizing: @model;
+	box-sizing: @model;
+}
+
 .transition(@property: all, @duration: 500ms, @timing: ease-out, @delay: 0s)
 {
 	-webkit-transition: @arguments;
@@ -24,10 +38,4 @@
 	-o-transform: rotate(@degrees);
 	-ms-transform: rotate(@degrees);
 	transform: rotate(@degrees);
-}
-.box-sizing(@model: border-box)
-{
-	-webkit-box-sizing: @model;
-	-moz-box-sizing: @model;
-	box-sizing: @model;
 }

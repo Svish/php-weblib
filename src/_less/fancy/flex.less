@@ -4,20 +4,28 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	//justify-content: center;
-	//align-items: center;
-	//align-content: flex-start;
 
 	&>*
 	{
 		flex-grow: 1;
 		flex-basis: 0;
-		margin: 0 3em 1.5rem 0;
+		margin: 0 (@trailing-margin * 2) @trailing-margin 0;
 		white-space: nowrap;
 	}
 }
 
 // Responsiveness
-@media only screen and (max-width : 550px)
+@media only screen and (max-width : 480px)
 {
+	.flex
+	{
+		flex-direction: column;
+		&>*
+		{
+			flex-grow: 1;
+			flex-basis: 0;
+			margin: 0 0 @trailing-margin 0;
+			white-space: nowrap;
+		}
+	}
 }
