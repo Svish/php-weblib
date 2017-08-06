@@ -18,6 +18,6 @@ class Md
 		if($render)
 			$text = $render($text);
 
-		return Markdown::render($text);
+		return Markdown::instance()->render($text);
 	}
 }

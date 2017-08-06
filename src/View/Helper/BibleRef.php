@@ -15,10 +15,8 @@ use Mustache_LambdaHelper as Helper;
 class BibleRef
 {
 	const KEY = '%s';
-	const MD_REF = '/]\(ref=([^)]++)\)/';
 
 	private $_url;
-
 
 	public function __construct()
 	{
@@ -31,16 +29,5 @@ class BibleRef
 		$ref = $render ? $render($ref) : $ref;
 		$ref = urlencode($ref);
 		return str_replace(self::KEY, $ref, $this->_url);
-	}
-
-	public function md_replace(string $markdown)
-	{
-		return preg_replace_callback(self::MD_REF, [$this, '_replace'], $markdown);
-	}
-
-	private function _replace(array $m)
-	{
-		$ref = $this($m[1]);
-		return "]($ref)";
 	}
 }
