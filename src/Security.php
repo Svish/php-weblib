@@ -13,7 +13,7 @@ class Security
 	 * @throws Unauthorized If not logged in.
 	 * @throws Forbidden If not having required roles
 	 */
-	public static function require(array $roles): bool
+	public static function require(string ...$roles): bool
 	{
 		Log::trace("Requiring", $roles, '…');
 		self::log_backtrace();

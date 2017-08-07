@@ -22,6 +22,6 @@ abstract class Secure extends \Controller
 		if($this->required_roles === false)
 			return;
 
-		Security::require($this->required_roles);
+		Security::require(...$this->required_roles);
 	}
 }

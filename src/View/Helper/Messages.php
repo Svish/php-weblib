@@ -18,7 +18,7 @@ class Messages
 				'list' => $m,
 				'fl' => new Fl,
 				'rf' => new Flr,
-				'admin' => new Role('admin'),
+				'_s' => new Security('admin'),
 				]);
 	}
 }

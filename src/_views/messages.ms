@@ -1,6 +1,8 @@
 {{#list}}
 <div class="message {{type}}">{{text | fl}}
-{{#admin}}{{text | rf}}{{/admin}}</div>
+{{#_s}}{{text | rf}}{{/_s}}</div>
 {{/list}}
+
+{{! TODO: Load via JS, and don't show exception details}}
 
 {{!#svg}}{{!type}}{{!/svg}}

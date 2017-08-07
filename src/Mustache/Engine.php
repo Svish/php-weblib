@@ -1,12 +1,10 @@
 <?php
 
 namespace Mustache;
+
 use Cache\I18N as Cache;
 
-use Mustache\Loader\CascadingFilesystem as Loader;
-use Mustache\Loader\Filesystem as File;
-use Mustache\Loader\FilesystemPartials as Partials;
-
+use Mustache\Loader\CascadingFilesystemLoader as CascadingFilesystemLoader;
 use Mustache_Engine as ME;
 
 
@@ -36,7 +34,7 @@ class Engine extends ME
 		if($partials)
 			$options += [
 				'partials_loader'
-					=> new Loader(Partials::class, $partials),
+					=> new CascadingFilesystemLoader($partials),
 			];
 
 		$options += [
@@ -45,7 +43,7 @@ class Engine extends ME
 			'entity_flags' => ENT_HTML5,
 			'strict_callables' => true,
 			'logger' => new Logger,
-			'loader' => new Loader(File::class, $templates),
+			'loader' => new CascadingFilesystemLoader($templates),
 			];
 
 		parent::__construct($options);
