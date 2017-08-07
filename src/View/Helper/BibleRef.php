@@ -20,8 +20,8 @@ class BibleRef
 
 	public function __construct()
 	{
-		$url = Config::bibleRefs(INI_SCANNER_RAW)[LOCALE]['search'];
-		$this->_url = $url;
+		$config = Config::bibleRefs(INI_SCANNER_RAW);
+		$this->_url = $config[LOCALE]['search'] ?? $config['search'];;
 	}
 
 	public function __invoke(string $ref, Helper $render = null)
