@@ -16,8 +16,7 @@ class Flr
 		if($render)
 			$text = $render($text);
 
-		// TODO: use substr + strpos instead
-		$text = explode("\r\n", $text);
+		$text = preg_split(Fl::NL, $text, -1, PREG_SPLIT_NO_EMPTY);
 		array_shift($text);
 		return implode("\r\n", $text);
 	}

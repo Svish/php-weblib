@@ -11,11 +11,13 @@ namespace View\Helper;
  */
 class Fl
 {
+	const NL = '/(?:\r\n|\n|\r)/';
+
 	public function __invoke($text, $render = null)
 	{
 		if($render)
 			$text = $render($text);
 
-		return explode("\r\n", $text, 2)[0];
+		return preg_split(self::NL, $text, 2, PREG_SPLIT_NO_EMPTY)[0];
 	}
 }
