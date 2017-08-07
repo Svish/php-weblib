@@ -86,7 +86,7 @@ class Cache
 		foreach($this->valid as $v)
 			if( ! $v($mtime, $key))
 			{
-				Log::trace_raw(strval_any($v).": Invalidated {$this->id}[$key]}");
+				Log::warn_raw(strval_any($v).": Invalidated {$this->id}[$key]}");
 				$valid = false;
 			}
 

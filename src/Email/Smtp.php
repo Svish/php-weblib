@@ -20,7 +20,7 @@ class Smtp
 
 	public function __construct()
 	{
-		$this->config = Config::email();
+		$this->config = Config::contact();
 	}
 
 	protected function send(\Swift_Message $message): bool

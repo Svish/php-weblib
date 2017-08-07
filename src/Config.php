@@ -1,5 +1,7 @@
 <?php
 
+use Error\InternalNotFound;
+
 /**
  * Loads config files.
  * 
@@ -7,7 +9,9 @@
  */
 class Config
 {
-	const DIR = ROOT.'config'.DS;
+	const DIR = 'config'.DS;
+	const GLOB = '{.,}%s.{ini,json,inc,txt}';
+
 
 	public static $loaded = [];
 	public static function __callStatic($name, $args)
@@ -20,9 +24,10 @@ class Config
 
 	private static function _get(string $name, array $args)
 	{
-		$files = glob(self::DIR."{.,}$name.{inc,ini,json}", GLOB_BRACE);
+		$glob = self::DIR.sprintf(self::GLOB, $name);
+		$files = glob($glob, GLOB_BRACE);
 		if( ! $files)
-			throw new Exception("Config for '$name' not found.");
+			throw new InternalNotFound($name, 'config file');
 
 		return self::_load($files[0], $args);
 	}
@@ -40,6 +45,9 @@ class Config
 				
 			case 'inc':
 				return include $path;
+
+			case 'txt':
+				return file_get_contents($path);
 		}
 	}
 }

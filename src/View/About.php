@@ -27,6 +27,15 @@ class About extends Layout
 		array_sort_by('author', $list);
 		return $list;
 	}
+
+	// TODO Show locale? Etc?
+	/*
+	var_dump(
+		get_defined_vars(),
+		get_defined_constants(true)['user'],
+		setlocale(LC_ALL, 0),
+		I18N::instance());
+	*/
 }
 
 
