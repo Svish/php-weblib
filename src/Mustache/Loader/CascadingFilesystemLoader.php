@@ -2,7 +2,7 @@
 
 namespace Mustache\Loader;
 
-use Mustache_Loader_FilesystemLoader as Loader;
+use Mustache_Loader_ProductionFilesystemLoader as Loader;
 
 
 /**
@@ -22,6 +22,7 @@ class CascadingFilesystemLoader extends \Mustache_Loader_CascadingLoader
 			{
 				$loaders[] = new Loader($path, $options +
 					[
+						'stat_props' => ['mtime'],
 						'extension' => self::EXT,
 					]);
 			}
