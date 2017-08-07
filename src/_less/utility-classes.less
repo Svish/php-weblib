@@ -40,3 +40,14 @@ p.left
 {
 	text-align: left;
 }
+
+// Clear fix
+.clear-fix
+{
+	&:after
+	{
+		content: "";
+		display: table;
+		clear: both;	
+	}
+}
