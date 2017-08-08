@@ -18,6 +18,9 @@ class Fl
 		if($render)
 			$text = $render($text);
 
+		if( ! $text)
+			return $text;
+
 		return preg_split(self::NL, $text, 2, PREG_SPLIT_NO_EMPTY)[0];
 	}
 }
