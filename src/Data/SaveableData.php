@@ -57,12 +57,12 @@ abstract class SaveableData extends Data implements Entity
 
 	public function __set($key, $value)
 	{
-		// Set value
-		parent::__set($key, $value);
-
 		// Add to dirty if different
 		if($value !== $this->{$key})
 			$this->_dirty[$key] = $value;
+
+		// Set value
+		parent::__set($key, $value);
 	}
 
 	
