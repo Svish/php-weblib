@@ -5,7 +5,7 @@ namespace Error;
 /**
  * 500 Internal Server Error.
  *
- * Errprs that will be presented more obscurely to users.
+ * Errors that will be presented more obscurely to users.
  */
 class Internal extends HttpException
 {

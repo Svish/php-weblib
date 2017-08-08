@@ -61,11 +61,9 @@ class File
 	/**
 	 * Appends $data to $file.
 	 * 
-	 * Uses $prefix unless empty file.
-	 * 
 	 * @return string Returns $data for chaining.
 	 */
-	public static function append(string $file, string $data, string $prefix = "\r\n"): string
+	public static function append(string $file, string $data, string $postfix = "\r\n"): string
 	{
 		if(empty($file))
 			throw new Oops(__METHOD__.' called with empty file.');
@@ -74,9 +72,7 @@ class File
 
 		$fp = fopen($file, 'a');
 		flock($fp, LOCK_EX);
-		if(fstat($fp)['size'] > 0)
-			fwrite($fp, $prefix);
-		fwrite($fp, $data);
+		fwrite($fp, $data.$postfix);
 		fflush($fp);
 		flock($fp, LOCK_UN);
 		fclose($fp);

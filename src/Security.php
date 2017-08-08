@@ -15,7 +15,7 @@ class Security
 	 */
 	public static function require(string ...$roles): bool
 	{
-		Log::trace("Requiring", $roles, '…');
+		Log::trace("Requiring", $roles);
 		self::log_backtrace();
 
 		// Get logged in user
@@ -34,7 +34,7 @@ class Security
 		// Check roles
 		if( ! $user->has_roles(...$roles))
 		{
-			Log::warn('Requires:', $roles, '; Has:', $user->roles);
+			Log::warn("$user does not have", $roles, '; has ', $user->roles);
 			throw new \Error\Forbidden($roles);
 		}
 
@@ -50,7 +50,7 @@ class Security
 	 */
 	public static function check(string ...$roles): bool
 	{
-		Log::trace("Checking for", $roles, '…');
+		Log::trace("Checking for", $roles);
 		self::log_backtrace();
 
 		$user = Model::users()->logged_in();
@@ -71,6 +71,6 @@ class Security
 	private static function log_backtrace()
 	{
 		$back = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
-		Log::trace_raw(" └ Called from {$back['class']}->{$back['function']}");
+		Log::trace("Called from {$back['class']}->{$back['function']}");
 	}
 }

@@ -52,6 +52,7 @@ class Less extends Cached
 		if( ! is_readable($this->_less))
 			throw new PageNotFound;
 
+		Log::trace('Compiling', $this->_less);
 		$this->_compile();
 
 		parent::before($info);
@@ -73,6 +74,7 @@ class Less extends Cached
 		{
 			$cache = Cache::dir(__CLASS__);
 			File::mkdir($cache);
+			Log::trace('Using cache', $cache);
 			$this->_css = $cache.Lessc::Get([ $this->_less => WEBROOT ],
 				[
 					'compress' => true,

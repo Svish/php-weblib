@@ -20,7 +20,7 @@ class Page extends Secure
 
 	public function get()
 	{
-		Log::trace("Using {$this->view}…");
+		Log::trace("Using {$this->view}");
 		$view = $this->view ?? \View\Layout::class;
 		return (new $view)->output();
 	}

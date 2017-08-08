@@ -27,7 +27,7 @@ class Time implements \Cache\Validator
 	public function __invoke(int $time): bool
 	{
 		$age = time() - $time;
-		Log::trace("Checking TTL {$this->ttl} > {$age}…");
+		Log::trace("Checking TTL {$this->ttl} > {$age}");
 		$valid = $age <= $this->ttl;
 		
 		if( ! $valid)

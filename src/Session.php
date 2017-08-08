@@ -15,16 +15,18 @@ class Session
 		if( ! session_id())
 			self::start();
 
-		Log::trace("Append", $key, $value);
+		Log::trace("Append '$key'", $value);
 		return $_SESSION[$key][] = $value;
 	}
 
 	public static function unget($key, $default = null)
 	{
-		Log::trace("Unget", $key, "(default=", $default, ")");
+		if( ! session_id())
+			self::start();
 
-		$value = self::get($key, $default);
-		self::unset($key);
+		Log::trace("Unget '$key', default=", $default);
+		$value = $_SESSION[$key] ?? $default;
+		unset($_SESSION[$key]);
 		return $value;
 	}
 
@@ -33,7 +35,7 @@ class Session
 		if( ! session_id())
 			self::start();
 
-		Log::trace("Get", $key, "(default=", $default, ")");
+		Log::trace("Get '$key', default=", $default);
 		return $_SESSION[$key] ?? $default;
 	}
 
@@ -42,7 +44,7 @@ class Session
 		if( ! session_id())
 			self::start();
 
-		Log::trace("Setting", $key, $value);
+		Log::trace("Setting '$key'", $value);
 		return $_SESSION[$key] = $value;
 	}
 
@@ -51,13 +53,13 @@ class Session
 		if( ! session_id())
 			self::start();
 
-		Log::trace("Unset", $key);
+		Log::trace("Unset '$key'");
 		unset($_SESSION[$key]);
 	}
 
 	public static function start()
 	{
-		Log::trace('Starting session['.self::ID.']…');
+		Log::trace('Starting session['.self::ID.']');
 		session_name(self::ID);
 		session_start();
 	}
@@ -66,7 +68,7 @@ class Session
 	{
 		if(session_name())
 		{
-			Log::trace('Closing session['.self::ID.']…');
+			Log::trace('Closing session['.self::ID.']');
 			session_write_close();
 		}
 	}
@@ -74,7 +76,7 @@ class Session
 	public static function destroy()
 	{
 		self::start();
-		Log::trace('Destroying session['.self::ID.']…');
+		Log::trace('Destroying session['.self::ID.']');
 
 		$_SESSION = array();
 		

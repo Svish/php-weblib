@@ -28,7 +28,7 @@ class IncludedFiles extends Files
 				$count++;
 				return strpos($s, '.cache'.DS) === false;
 			});
-		Log::trace("Checking {$count} included files…");
+		Log::trace("Checking {$count} included files");
 
 		return parent::__invoke($time);
 	}

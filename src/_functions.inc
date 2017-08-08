@@ -44,6 +44,11 @@ function str_truncate(string $subject, int $max_length, string $append = '…')
 }
 
 
+function str_indent(string $subject, string $chr = "\t")
+{
+	return preg_replace("/^/m", $chr, $subject);
+}
+
 
 /**
  * @return string Safe strval that (should) accept anything.

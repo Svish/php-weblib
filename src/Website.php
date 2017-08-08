@@ -25,6 +25,8 @@ class Website
 
 	public function serve()
 	{
+		$time = microtime(true);
+
 		// Find route
 		$route = $this->find_route($this->path);
 
@@ -35,6 +37,9 @@ class Website
 			'handler' => null,
 			'params' => [],
 			]);
+
+		$code = http_response_code();
+		Log::trace_raw(" └ Status=$code, ".number_format(microtime(true) - $time, 3));
 	}
 
 
@@ -49,15 +54,23 @@ class Website
 		$handler = self::create_handler($request['handler'], $request['path']);
 
 		// Call handler::before
-		if( method_exists($handler, 'before'))
+		if(method_exists($handler, 'before'))
+		{
+			Log::trace_raw(" ├ {$handler}->before()");
 			$handler->before($request);
+		}
 
 		// Call handler::method
+		Log::trace_raw(" ├ {$handler}->{$request['method']}( ".implode(', ', $request['params'])." )");
+
 		call_user_func_array([$handler, $request['method']], $request['params']);
 
 		// Call handler::after
-		if( method_exists($handler, 'after'))
+		if(method_exists($handler, 'after'))
+		{
+			Log::trace_raw(" ├ {$handler}->after()");
 			$handler->after($request);
+		}
 	}
 
 
@@ -73,6 +86,7 @@ class Website
 		{
 			throw new PageNotFound(null, $e);
 		}
+		Log::trace_raw(" ├ Creating {$handler}");
 		return new $handler;
 	}
 
@@ -81,10 +95,8 @@ class Website
 	protected function find_route($path)
 	{
 		$route = $this->parse_path($path);
-		Log::group();
-		Log::info_raw('Path:', $path);
-		Log::trace_raw('Route:', $route);
-		Log::groupEnd();
+		Log::info_raw(' ┌ Path:', $path);
+		Log::trace_raw(' ├ Route:', $route);
 		
 		if($route['handler'] === null)
 			throw new PageNotFound;

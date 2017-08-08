@@ -24,6 +24,7 @@ class Handler
 			? 'error_raw'
 			: 'info_raw';
 		Log::$log(get_class($e), $e->getMessage());
+		log::trace_raw("\r\n".str_indent($e->getTraceAsString()));
 
 		// Add message
 		Message::exception($e);

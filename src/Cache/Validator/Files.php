@@ -29,7 +29,7 @@ class Files implements \Cache\Validator
 	 */
 	public function __invoke(int $time): bool
 	{
-		Log::trace("Checking files…");
+		Log::trace("Checking files");
 		foreach($this->files as $f)
 			if(filemtime(self::to_win($f)) >= $time)
 			{

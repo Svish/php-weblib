@@ -40,7 +40,7 @@ class Mustache extends \View
 					if( ! headers_sent($file, $line))
 						header('content-type: text/html; charset=utf-8');
 					
-					Log::trace('Rendering template', $this->_template, '…');
+					Log::trace('Rendering template', $this->_template);
 
 					return Ms::engine($this->_template, [])
 						->render($this->_template, $this);

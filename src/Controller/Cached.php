@@ -57,7 +57,7 @@ abstract class Cached extends \Controller
 		}
 
 		// Otherwise, gather regular output
-		Log::trace('Started output buffering…');
+		Log::trace('Started output buffering');
 		ob_start();
 	}
 
@@ -89,7 +89,7 @@ abstract class Cached extends \Controller
 		}
 
 		// Otherwise resend cached
-		Log::trace('Resending cached…');
+		Log::trace('Resending cached');
 		HTTP::set_status($this->cached['code']);
 		foreach($this->cached['headers'] as $h)
 			header($h, false);

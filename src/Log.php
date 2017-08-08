@@ -17,6 +17,7 @@ class Log
 	
 
 	const DIR = ROOT.'.logs'.DS;
+	const EXT = '.log';
 	const TYPES = [
 		'group',
 		'groupEnd',
@@ -29,9 +30,16 @@ class Log
 
 
 	private $_console;
+	private $_file;
 	private function __construct()
 	{
 		$this->_console = new ConsoleLog(4);
+
+		$logfile = ENV !== 'dev'
+			? ENV.'.'.date('Y-m-d')
+			: ENV;
+		$this->_file = new FileOnShutdown(self::DIR.$logfile.self::EXT, true);
+		$this->_file->put('---');
 	}
 
 
@@ -52,7 +60,7 @@ class Log
 	public function __call($type, $args)
 	{
 		// Get backtrace
-		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[2];
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[2] ?? null;		
 
 		// Get type and "raw"
 		$raw = ends_with('_raw', $type);
@@ -63,11 +71,10 @@ class Log
 			throw new Exception("Unsupported log type: $type");
 
 		// Console logging
-		if(ENV == 'dev' || Security::check('admin'))
-			self::instance()->_consoleLog($backtrace, $type, $raw, $args);
+		self::instance()->_consoleLog($backtrace, $type, $raw, $args);
 
 		// File logging
-		//self::instance()->_fileLog($backtrace, $type, $raw, $args);
+		self::instance()->_fileLog($backtrace, $type, $raw, $args);
 	}
 
 
@@ -89,16 +96,16 @@ class Log
 				break;
 
 			default:
-				$m = strtoupper($type)."\t";
-				
+				$m = (new DateTime)->format('Y-m-d H:i:s.v')."\t";
+				$m .= strtoupper($type)."\t";
+
 				if( ! $raw)
-					$m .= "{$backtrace['class']}: ";
+					$m .= ($backtrace['class'] ?? '.') . ': ';
 
 				$args = array_map([$this, '_filter'], $args);
 				$m .= implode(' ', $args);
 
-				if($this->_config['error_log'] ?? true)
-					error_log($m);
+				$this->_file->append($m);
 				break;
 		}
 	}
@@ -107,24 +114,30 @@ class Log
 	{
 		if(is_scalar($arg))
 			return $arg;
+		if(is_array($arg))
+			return trim(substr(print_r($arg, true), 7, -2));
 		else
-			return json_encode($arg);
+			return print_r($arg, true);
 	}
 
-
 	
+
 	/**
 	 * Helper: ConsoleLog wrapper with some extras.
 	 */
 	protected function _consoleLog(array $backtrace, string $type, bool $raw, array $args)
 	{
+		// HACK: Something following here crashes on one.com... :/
+		if(ENV !== 'dev')
+			return;
+
 		if($type == 'trace')
 			$type = 'log';
 
 		if( ! $raw)
 		{
 			// Add caller as header/first argument
-			$caller = $backtrace['class'];
+			$caller = $backtrace['class'] ?? '{main}';
 			array_unshift($args, "$caller:");
 		}
 

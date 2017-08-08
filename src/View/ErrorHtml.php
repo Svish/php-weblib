@@ -38,7 +38,7 @@ class ErrorHtml extends \View\Layout
 		if(ENV !== 'dev' AND ! Security::check('admin'))
 			return null;
 
-		Log::trace('Getting details from', isset($e->xdebug_message) ? 'XDebug' : get_class($e), '…');
+		Log::trace('Getting details from', isset($e->xdebug_message) ? 'XDebug' : get_class($e));
 
 		$msg = isset($e->xdebug_message)
 			? '<table class="xdebug">'.$e->xdebug_message.'</table>'

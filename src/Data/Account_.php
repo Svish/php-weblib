@@ -33,7 +33,7 @@ trait Account_
 		if(Hash::needs_rehash($this->password_hash))
 		{
 			$this->password = $password;
-			Log::info("Rehashed password for $this. Saving…");
+			Log::info("Rehashed password for $this. Saving");
 			$this->save();
 		}
 
@@ -44,7 +44,7 @@ trait Account_
 	public function make_token()
 	{
 		$this->token = bin2hex(random_bytes(16));
-		Log::info("Made reset token for $this. Saving…");
+		Log::info("Made reset token for $this. Saving");
 		$this->save();
 	}
 	
@@ -56,7 +56,7 @@ trait Account_
 		// TODO: Add a TTL for valid tokens
 		if($good)
 		{
-			Log::trace("Token accepted for $this. Removed and saving…");
+			Log::trace("Token accepted for $this. Removed and saving");
 			unset($this->token);
 			$this->save();
 		}
