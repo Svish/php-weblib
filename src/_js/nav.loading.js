@@ -8,7 +8,11 @@
 
 	// Nothing to do
 	if(images.length == 0)
+	{
+		// NOTE: In case only .loading without img
+		$('.loading', '#content').addClass('loaded');
 		return;
+	}
 
 	NProgress.start();	
 	var i = setInterval(function()
@@ -40,8 +44,15 @@
 				.closest('.loading')
 				.addClass('loaded');
 		}
-		// Stop when no more images in list
+
+		// When no more imags
 		if(images.length == 0)
+		{
+			// Stop
 			clearInterval(i);
+
+			// Make sure all is loaded
+			$('.loading', '#content').addClass('loaded');
+		}
 	}, 100);
 })();
