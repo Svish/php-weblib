@@ -14,19 +14,18 @@
  */
 class Text
 {
-	private static $t;
-
 	public static function __callStatic($header, $args)
 	{
-		if( ! self::$t)
-			self::$t = Config::text();
+		$text = I18N::strings();
 
 		$key = array_shift($args);
 		$key = is_array($key) ? 'Array' : strval($key);
 		$args = array_shift($args);
 
-		$text = self::$t[$header][$key] ?? $key;
+		$text = $text[$header][$key] ?? $key;
 
+
+		// TODO: Move this to translate function (or just use gettext?)
 		if(is_array($text))
 			$text = implode("\r\n", $text);
 
