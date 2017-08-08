@@ -27,7 +27,7 @@ class Cache
 	{
 		// Set cache directory
 		$this->id = $id;
-		$this->dir = static::DIR.$id.DS;
+		$this->dir = static::dir($id);
 
 		// Unless first is null, add default file validator
 		if(null !== reset($cache_validators))
@@ -134,13 +134,19 @@ class Cache
 	}
 
 
+	public static function dir(string $id): string
+	{
+		return static::DIR.str_replace(['\\', '/'], DS, $id).DS;
+	}
+
+
 
 	/**
 	 * Delete the cache for this $id.
 	 */
 	public function clear()
 	{
-		File::rdelete($this->dir);
+		File::rdelete($this->dir, true);
 		Log::trace("Cleared {$this->id}");
 	}
 
@@ -149,7 +155,7 @@ class Cache
 	 */
 	public static function clear_all()
 	{
-		File::rdelete(self::DIR);
+		File::rdelete(self::DIR, true);
 		Log::trace("Cleared all");
 	}
 }

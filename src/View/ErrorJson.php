@@ -1,8 +1,10 @@
 <?php
 namespace View;
+
 use Error\HttpException;
 use Error\ValidationFailed;
 use Security;
+
 
 /**
  * Json error response.

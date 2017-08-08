@@ -2,6 +2,7 @@
 namespace View;
 
 use Error\HttpException;
+use Security;
 use Log;
 
 
@@ -34,7 +35,7 @@ class ErrorHtml extends \View\Layout
 			return null;
 
 		// Only supply details in DEV or to admin
-		if( ENV !== 'dev' AND ! Security::check('admin'))
+		if(ENV !== 'dev' AND ! Security::check('admin'))
 			return null;
 
 		Log::trace('Getting details from', isset($e->xdebug_message) ? 'XDebug' : get_class($e), '…');

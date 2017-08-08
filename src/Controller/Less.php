@@ -24,7 +24,6 @@ use Cache, File, Log;
 class Less extends Cached
 {
 	const EXT = '.less';
-	const CACHE = Cache::DIR.__CLASS__.DS;
 	const DIR = [
 		'app' => SRC.'_less'.DS,
 		'lib' => __DIR__.DS.'..'.DS.'_less'.DS
@@ -72,12 +71,13 @@ class Less extends Cached
 	{
 		try
 		{
-			File::mkdir(self::CACHE);
-			$this->_css = self::CACHE.Lessc::Get([ $this->_less => WEBROOT ],
+			$cache = Cache::dir(__CLASS__);
+			File::mkdir($cache);
+			$this->_css = $cache.Lessc::Get([ $this->_less => WEBROOT ],
 				[
 					'compress' => true,
 					'strictMath' => true,
-					'cache_dir' => self::CACHE,
+					'cache_dir' => $cache,
 					'indentation' => "\t",
 					'import_callback' => [$this, 'find_import'],
 				]);
