@@ -74,6 +74,15 @@ a.frame
 		.box-shadow(0, 0, 10px, fadein(@shadow-color, 10%));
 		border-color: lighten(@accent2-color, 25%);
 	}
+
+	animation: highlight 3s;
+
+	@-webkit-keyframes highlight
+	{
+		0% { border-color: @accent2-color; }
+		50% { border-color: @accent2-color; }
+		100% { }
+	}
 }
 
 
