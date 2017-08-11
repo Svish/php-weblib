@@ -36,7 +36,6 @@ class Svg
 		$file = self::DIR."{$opt[0]}.svg";
 		$opt = $opt[1] ?? null;
 
-
 		if( ! is_file($file))
 			return "[svg=$opt]";
 		$svg = file_get_contents($file);
@@ -44,6 +43,7 @@ class Svg
 		if($opt)
 			$svg = str_replace('<svg ', "<svg $opt ", $svg);
 
+		// TODO: Filter out author attributes and whitespace
 		return $svg;
 	}
 }
